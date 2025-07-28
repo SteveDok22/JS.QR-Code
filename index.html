@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Your Resume QR Code</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume QR Code Generator</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
     <div class="container">
-        <h2>🎯 This is YOUR QR Code!</h2>
-        <p>Generated with the same settings as your Node.js code</p>
-
+        <h2>🎯 Resume QR Code Generator</h2>
+        <p>Generate QR code for your online resume</p>
+        
         <div id="qrcode"></div>
-
+        
         <div class="url">
             https://stevedok22.github.io/Project-CV-Code-0.2/
         </div>
-
+        
         <div class="info">
             <strong>Settings used:</strong><br>
             Width: 300px | Margin: 2 | Colors: Black on White
         </div>
-
-        <p><em>This is exactly what your generate-qr.js code will create!</em></p>
+        
+        <div class="buttons">
+            <button id="downloadBtn">📥 Download PNG</button>
+            <button id="regenerateBtn">🔄 Regenerate</button>
+        </div>
+        
+        <p><em>This preview shows what your Node.js code will generate!</em></p>
     </div>
-    <!-- QR code library -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-</body>
 
+    <!-- Import QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <!-- Import our custom JavaScript -->
+    <script src="script.js"></script>
+</body>
 </html>
