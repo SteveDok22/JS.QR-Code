@@ -1,174 +1,160 @@
-/* Reset and base styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+ /* Reset and base styles */
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
 
-body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
+ body {
+     font-family: 'Arial', sans-serif;
+     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+     min-height: 100vh;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     padding: 20px;
+ }
 
-/* Main container */
-.container {
-    background: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    max-width: 500px;
-    width: 100%;
-}
+ .container {
+     background: white;
+     padding: 40px;
+     border-radius: 15px;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+     text-align: center;
+     max-width: 500px;
+     width: 100%;
+ }
 
-/* Header */
-.container h2 {
-    color: #333;
-    margin-bottom: 10px;
-    font-size: 2em;
-}
+ .container h2 {
+     color: #333;
+     margin-bottom: 10px;
+     font-size: 2em;
+ }
 
-.container p {
-    color: #666;
-    margin-bottom: 30px;
-    font-size: 1.1em;
-}
+ .container p {
+     color: #666;
+     margin-bottom: 30px;
+     font-size: 1.1em;
+ }
 
-/* QR Code container */
-#qrcode {
-    margin: 30px 0;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    border: 2px dashed #e9ecef;
-}
+ #qrcode {
+     margin: 30px 0;
+     padding: 20px;
+     background: #f8f9fa;
+     border-radius: 10px;
+     border: 2px dashed #e9ecef;
+     min-height: 150px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     flex-direction: column;
+ }
 
-/* URL display */
-.url {
-    background: #e3f2fd;
-    border: 1px solid #90caf9;
-    border-radius: 8px;
-    padding: 15px;
-    margin: 20px 0;
-    font-family: 'Courier New', monospace;
-    word-break: break-all;
-    color: #1976d2;
-    font-size: 0.9em;
-}
+ #qrcode canvas {
+     border-radius: 8px;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+ }
 
-/* Info section */
-.info {
-    background: #fff3e0;
-    border-left: 4px solid #ff9800;
-    padding: 15px;
-    margin: 20px 0;
-    border-radius: 0 8px 8px 0;
-    color: #bf360c;
-    font-size: 14px;
-}
+ .url {
+     background: #e3f2fd;
+     border: 1px solid #90caf9;
+     border-radius: 8px;
+     padding: 15px;
+     margin: 20px 0;
+     font-family: 'Courier New', monospace;
+     word-break: break-all;
+     color: #1976d2;
+     font-size: 0.9em;
+ }
 
-/* Buttons */
-.buttons {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin: 30px 0;
-    flex-wrap: wrap;
-}
+ .info {
+     background: #fff3e0;
+     border-left: 4px solid #ff9800;
+     padding: 15px;
+     margin: 20px 0;
+     border-radius: 0 8px 8px 0;
+     color: #bf360c;
+     font-size: 14px;
+ }
 
-button {
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
+ .buttons {
+     display: flex;
+     gap: 15px;
+     justify-content: center;
+     margin: 30px 0;
+     flex-wrap: wrap;
+ }
 
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
+ button {
+     background: linear-gradient(45deg, #667eea, #764ba2);
+     color: white;
+     border: none;
+     padding: 12px 25px;
+     border-radius: 25px;
+     cursor: pointer;
+     font-size: 16px;
+     font-weight: 600;
+     transition: all 0.3s ease;
+     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+ }
 
-button:active {
-    transform: translateY(0);
-}
+ button:hover:not(:disabled) {
+     transform: translateY(-2px);
+     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+ }
 
-/* Error and loading states */
-.error {
-    color: #d32f2f;
-    background: #ffebee;
-    border: 1px solid #f8bbd9;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 20px 0;
-}
+ button:disabled {
+     opacity: 0.6;
+     cursor: not-allowed;
+     transform: none;
+ }
 
-.loading {
-    color: #1976d2;
-    font-style: italic;
-}
+ .loading {
+     color: #1976d2;
+     font-style: italic;
+     font-size: 16px;
+ }
 
-/* Responsive design */
-@media (max-width: 480px) {
-    .container {
-        padding: 20px;
-        margin: 10px;
-    }
+ .error {
+     color: #d32f2f;
+     background: #ffebee;
+     border: 1px solid #f8bbd9;
+     padding: 15px;
+     border-radius: 8px;
+     margin: 20px 0;
+ }
 
-    .container h2 {
-        font-size: 1.5em;
-    }
+ .success {
+     color: #2e7d32;
+     background: #e8f5e8;
+     border: 1px solid #a5d6a7;
+     padding: 10px;
+     border-radius: 8px;
+     margin: 10px 0;
+     font-size: 14px;
+ }
 
-    .buttons {
-        flex-direction: column;
-    }
+ .qr-pixel {
+     width: 10px;
+     height: 10px;
+     display: inline-block;
+ }
 
-    button {
-        width: 100%;
-    }
-}
+ @media (max-width: 480px) {
+     .container {
+         padding: 20px;
+         margin: 10px;
+     }
 
-/* Update the #qrcode container */
-#qrcode {
-    margin: 30px 0;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    border: 2px dashed #e9ecef;
-    min-height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+     .container h2 {
+         font-size: 1.5em;
+     }
 
-#qrcode canvas {
-    border-radius: 8px;
-}
+     .buttons {
+         flex-direction: column;
+     }
 
-/* Add these new button states */
-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* Add success status style */
-.success {
-    color: #2e7d32;
-    background: #e8f5e8;
-    border: 1px solid #a5d6a7;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 10px 0;
-    font-size: 14px;
-}
+     button {
+         width: 100%;
+     }
+ }
