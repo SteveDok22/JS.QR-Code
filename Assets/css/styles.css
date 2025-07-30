@@ -124,16 +124,51 @@ button:active {
         padding: 20px;
         margin: 10px;
     }
-    
+
     .container h2 {
         font-size: 1.5em;
     }
-    
+
     .buttons {
         flex-direction: column;
     }
-    
+
     button {
         width: 100%;
     }
+}
+
+/* Update the #qrcode container */
+#qrcode {
+    margin: 30px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 2px dashed #e9ecef;
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#qrcode canvas {
+    border-radius: 8px;
+}
+
+/* Add these new button states */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Add success status style */
+.success {
+    color: #2e7d32;
+    background: #e8f5e8;
+    border: 1px solid #a5d6a7;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 14px;
 }
