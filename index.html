@@ -9,31 +9,38 @@
 </head>
 
 <body>
-    <div class="container">
-        <h2>🎯 Resume QR Code Generator</h2>
-        <p>Generate QR code for your online resume</p>
-        
-        <div id="qrcode">
-            <div class="loading">🔄 Generating QR code...</div>
-        </div>
-        
-        <div class="url">
-            https://stevedok22.github.io/Project-CV-Code-0.2/
-        </div>
-        
-        <div class="info">
-            <strong>Settings used:</strong><br>
-            Width: 300px | Margin: 2 | Colors: Black on White
-        </div>
-        
-        <div class="buttons">
-            <button id="downloadBtn" disabled>📥 Download PNG</button>
-            <button id="regenerateBtn" disabled>🔄 Regenerate</button>
-        </div>
-        
-        <div id="status"></div>
-        
-        <p><em>This preview shows what your Node.js code will generate!</em></p>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Animated Starfield Background -->
+    <div class="starfield">
+        <div class="stars" id="stars"></div>
+    </div>
+
+    <!-- Thunder/Lightning Effects -->
+    <div class="thunder-container">
+        <div class="lightning"></div>
+        <div class="lightning"></div>
+        <div class="lightning"></div>
+        <div class="lightning"></div>
+    </div>
+
+    <div class="url">
+        https://stevedok22.github.io/Project-CV-Code-0.2/
+    </div>
+
+    <div class="info">
+        <strong>Settings used:</strong><br>
+        Width: 300px | Margin: 2 | Colors: Black on White
+    </div>
+
+    <div class="buttons">
+        <button id="downloadBtn" disabled>📥 Download PNG</button>
+        <button id="regenerateBtn" disabled>🔄 Regenerate</button>
+    </div>
+
+    <div id="status"></div>
+
+    <p><em>This preview shows what your Node.js code will generate!</em></p>
     </div>
 
     <script src="Assets/js/script.js"></script>
