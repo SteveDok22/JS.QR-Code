@@ -24,23 +24,35 @@
         <div class="lightning"></div>
     </div>
 
-    <div class="url">
-        https://stevedok22.github.io/Project-CV-Code-0.2/
-    </div>
+    <div class="container">
+        <div class="header">
+            <h2> QR GENERATOR </h2>
+            <p>Create electrifying QR codes for your resume</p>
+        </div>
 
-    <div class="info">
-        <strong>Settings used:</strong><br>
-        Width: 300px | Margin: 2 | Colors: Black on White
-    </div>
+        <div id="qrcode">
+            <div class="loading">⚡ Generating QR code</div>
+        </div>
 
-    <div class="buttons">
-        <button id="downloadBtn" disabled>📥 Download PNG</button>
-        <button id="regenerateBtn" disabled>🔄 Regenerate</button>
-    </div>
+        <div class="url-container">
+            <div class="url">
+                https://stevedok22.github.io/Project-CV-Code-0.2/
+            </div>
+        </div>
 
-    <div id="status"></div>
+        <div class="info">
+            <strong>⚙️ Configuration:</strong><br>
+            Resolution: 300px | Margin: 2 | Theme: Thunder Black
+        </div>
 
-    <p><em>This preview shows what your Node.js code will generate!</em></p>
+        <div class="buttons">
+            <button id="downloadBtn" class="btn" disabled>⬇ Download</button>
+            <button id="regenerateBtn" class="btn btn-secondary" disabled>🔄 Regenerate</button>
+        </div>
+
+        <div id="status"></div>
+
+        <p class="footer-text"><em>⚡ Powered by lightning-fast generation technology</em></p>
     </div>
 
     <script src="Assets/js/script.js"></script>
