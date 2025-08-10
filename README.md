@@ -2,6 +2,10 @@
 
 A simple and elegant QR code generator for your online resume. Create professional QR codes that link directly to your resume website - perfect for business cards, printed resumes, and networking events.
 
+## Project Overview
+
+**Live Website:** [See deployed website](https://stevedok22.github.io/JS.QR-Code/)
+
 ## 🌟 Features
 
 - **Dual Interface**: Web browser preview + Node.js command line
