@@ -78,3 +78,53 @@ class ThunderQRGenerator {
             throw new Error('QR generation failed: ' + error.message);
         }
     }
+    createFallback() {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.size;
+        canvas.height = this.size;
+        const ctx = canvas.getContext('2d');
+
+        // Black background
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, this.size, this.size);
+
+        // Electric border
+        const gradient = ctx.createLinearGradient(0, 0, this.size, this.size);
+        gradient.addColorStop(0, '#00d4ff');
+        gradient.addColorStop(0.5, '#ffd700');
+        gradient.addColorStop(1, '#8338ec');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, this.size, 20);
+        ctx.fillRect(0, 0, 20, this.size);
+        ctx.fillRect(this.size - 20, 0, 20, this.size);
+        ctx.fillRect(0, this.size - 20, this.size, 20);
+
+        // Center text
+        ctx.fillStyle = '#00d4ff';
+        ctx.font = 'bold 16px Orbitron, Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('⚡ QR PLACEHOLDER ⚡', this.size / 2, this.size / 2 - 30);
+        ctx.fillText('Use Node.js version', this.size / 2, this.size / 2);
+        ctx.fillText('for actual QR code', this.size / 2, this.size / 2 + 30);
+
+        this.canvas = canvas;
+        this.dataURL = canvas.toDataURL('image/png');
+
+        return canvas;
+    }
+
+    async generate() {
+        try {
+            return await this.generateWithQRServer();
+        } catch (error1) {
+            console.log('QR Server failed, trying Google Charts...', error1.message);
+            try {
+                return await this.generateWithGoogleAPI();
+            } catch (error2) {
+                console.log('Google Charts failed, creating fallback...', error2.message);
+                return this.createFallback();
+            }
+        }
+    }
+}
