@@ -128,3 +128,130 @@ class ThunderQRGenerator {
         }
     }
 }
+
+// Initialize starfield
+function createStarfield() {
+    const starsContainer = document.getElementById('stars');
+    const numStars = 200;
+
+    for (let i = 0; i < numStars; i++) {
+        const star = document.createElement('div');
+        star.className = `star ${Math.random() > 0.7 ? 'large' : Math.random() > 0.5 ? 'medium' : 'small'}`;
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        starsContainer.appendChild(star);
+    }
+
+    // Add shooting stars
+    setInterval(() => {
+        if (Math.random() > 0.8) {
+            createShootingStar();
+        }
+    }, 2000);
+
+    // Add electric particles
+    setInterval(() => {
+        if (Math.random() > 0.7) {
+            createElectricParticle();
+        }
+    }, 1000);
+}
+
+function createShootingStar() {
+    const shootingStar = document.createElement('div');
+    shootingStar.className = 'shooting-star';
+    shootingStar.style.left = Math.random() * 100 + '%';
+    shootingStar.style.top = Math.random() * 50 + '%';
+    document.querySelector('.starfield').appendChild(shootingStar);
+
+    setTimeout(() => {
+        shootingStar.remove();
+    }, 3000);
+}
+
+function createElectricParticle() {
+    const particle = document.createElement('div');
+    particle.className = 'electric-particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 2 + 's';
+    document.querySelector('.thunder-container').appendChild(particle);
+
+    setTimeout(() => {
+        particle.remove();
+    }, 6000);
+}
+
+// Enhanced application logic with thunder effects
+let qrGenerator = new ThunderQRGenerator();
+let isGenerating = false;
+
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('⚡ Initializing Thunder QR Generator...');
+    createStarfield();
+    setupEventListeners();
+    generateQRCode();
+    addThunderEffects();
+});
+
+function setupEventListeners() {
+    const downloadBtn = document.getElementById('downloadBtn');
+    const regenerateBtn = document.getElementById('regenerateBtn');
+
+    downloadBtn.addEventListener('click', downloadQRCode);
+    regenerateBtn.addEventListener('click', regenerateQRCode);
+
+    // Add electric click effects
+    [downloadBtn, regenerateBtn].forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            createElectricRipple(e, this);
+        });
+    });
+}
+
+function addThunderEffects() {
+    const container = document.querySelector('.container');
+
+    container.addEventListener('mouseenter', () => {
+        container.style.transform = 'translateY(-8px)';
+        container.style.boxShadow = 'var(--shadow-thunder)';
+    });
+
+    container.addEventListener('mouseleave', () => {
+        container.style.transform = 'translateY(0)';
+        container.style.boxShadow = 'var(--shadow-primary)';
+    });
+
+    // Add thunder sound effect simulation
+    document.addEventListener('mousemove', (e) => {
+        const container = document.querySelector('.container');
+        const rect = container.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+
+        // Create electric field effect
+        if (x >= 0 && x <= 1 && y >= 0 && y <= 1) {
+            const intensity = Math.min(Math.abs(x - 0.5) + Math.abs(y - 0.5), 1);
+            container.style.filter = `drop-shadow(0 0 ${20 + intensity * 20}px rgba(0, 212, 255, 0.3))`;
+        }
+    });
+
+    // Random lightning flashes
+    setInterval(() => {
+        if (Math.random() > 0.95) {
+            triggerLightningFlash();
+        }
+    }, 3000);
+}
+
+function triggerLightningFlash() {
+    const body = document.body;
+    const originalFilter = body.style.filter;
+
+    body.style.filter = 'brightness(1.5) saturate(1.2)';
+    body.style.transition = 'filter 0.1s';
+
+    setTimeout(() => {
+        body.style.filter = originalFilter;
+        body.style.transition = 'filter 0.3s';
+    }, 100);
