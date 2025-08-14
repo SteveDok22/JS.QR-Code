@@ -255,3 +255,94 @@ function triggerLightningFlash() {
         body.style.filter = originalFilter;
         body.style.transition = 'filter 0.3s';
     }, 100);
+    // Create screen flash effect
+    const flash = document.createElement('div');
+    flash.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: 9999;
+        pointer-events: none;
+        animation: flash 0.2s ease-out;
+    `;
+
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes flash {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+    document.body.appendChild(flash);
+
+    setTimeout(() => {
+        flash.remove();
+        style.remove();
+    }, 200);
+}
+
+function createElectricRipple(event, button) {
+    const ripple = document.createElement('span');
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+
+    ripple.style.cssText = `
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, rgba(0, 212, 255, 0.4) 50%, transparent 70%);
+        transform: scale(0);
+        animation: electricRipple 0.8s ease-out;
+        left: ${x}px;
+        top: ${y}px;
+        width: ${size}px;
+        height: ${size}px;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    `;
+
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes electricRipple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(2);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    button.appendChild(ripple);
+
+    setTimeout(() => {
+        ripple.remove();
+        style.remove();
+    }, 800);
+}
+
+async function generateQRCode() {
+    if (isGenerating) return;
+    isGenerating = true;
+
+    const qrContainer = document.getElementById('qrcode');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const regenerateBtn = document.getElementById('regenerateBtn');
+    const progressBar = document.getElementById('progressBar');
+
+    // Show loading with electric effect
+    qrContainer.innerHTML = '<div class="loading">⚡ Generating QR code</div>';
+    downloadBtn.disabled = true;
+    regenerateBtn.disabled = true;
