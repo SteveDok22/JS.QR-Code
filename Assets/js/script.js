@@ -346,3 +346,46 @@ async function generateQRCode() {
     qrContainer.innerHTML = '<div class="loading">⚡ Generating QR code</div>';
     downloadBtn.disabled = true;
     regenerateBtn.disabled = true;
+
+    // Animate progress bar with electric glow
+    progressBar.style.width = '30%';
+    progressBar.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.8)';
+    showStatus('⚡ Charging up the generator...', 'loading');
+
+    try {
+        console.log('⚡ Starting Thunder QR generation...');
+        progressBar.style.width = '60%';
+
+        const canvas = await qrGenerator.generate();
+        progressBar.style.width = '90%';
+
+        // Electric transition effect
+        qrContainer.style.opacity = '0';
+        qrContainer.style.filter = 'brightness(2) saturate(0)';
+
+        setTimeout(() => {
+            qrContainer.innerHTML = '';
+            canvas.style.borderRadius = '12px';
+            canvas.style.boxShadow = '0 8px 25px rgba(0,0,0,0.5), 0 0 20px rgba(0, 212, 255, 0.3)';
+            qrContainer.appendChild(canvas);
+            qrContainer.style.opacity = '1';
+            qrContainer.style.filter = 'brightness(1) saturate(1)';
+            qrContainer.style.transition = 'all 0.5s ease';
+
+            // Complete progress with thunder effect
+            progressBar.style.width = '100%';
+            progressBar.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.8)';
+
+            setTimeout(() => {
+                progressBar.style.width = '0%';
+                progressBar.style.boxShadow = '0 0 10px rgba(0, 212, 255, 0.8)';
+            }, 500);
+        }, 300);
+
+        // Enable buttons with electric animation
+        setTimeout(() => {
+            downloadBtn.disabled = false;
+            regenerateBtn.disabled = false;
+
+            downloadBtn.style.animation = 'fadeIn 0.5s ease-out, electricPulse 1s ease-out';
+            regenerateBtn.style.animation = 'fadeIn 0.5s ease-out 0.1s both, electricPulse 1s ease-out 0.1s';
