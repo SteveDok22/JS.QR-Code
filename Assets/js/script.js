@@ -389,3 +389,107 @@ async function generateQRCode() {
 
             downloadBtn.style.animation = 'fadeIn 0.5s ease-out, electricPulse 1s ease-out';
             regenerateBtn.style.animation = 'fadeIn 0.5s ease-out 0.1s both, electricPulse 1s ease-out 0.1s';
+
+            // Add electric pulse animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes electricPulse {
+                    0%, 100% { box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3); }
+                    50% { box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6); }
+                }
+            `;
+            document.head.appendChild(style);
+        }, 500);
+
+        showStatus('⚡ QR code generated with lightning speed!', 'success');
+        console.log('⚡ Thunder QR code generated successfully');
+
+    } catch (error) {
+        console.error('⚡ Thunder generation failed:', error);
+        progressBar.style.width = '0%';
+        progressBar.style.boxShadow = '0 0 20px rgba(255, 0, 110, 0.8)';
+        showError('⚡ Generation failed: ' + error.message);
+        regenerateBtn.disabled = false;
+    } finally {
+        isGenerating = false;
+    }
+}
+
+function regenerateQRCode() {
+    console.log('⚡ Regenerating with thunder power...');
+
+    const regenerateBtn = document.getElementById('regenerateBtn');
+    regenerateBtn.style.transform = 'scale(0.95)';
+    regenerateBtn.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.8)';
+
+    // Create electric burst effect
+    createElectricBurst(regenerateBtn);
+
+    setTimeout(() => {
+        regenerateBtn.style.transform = '';
+        regenerateBtn.style.boxShadow = '';
+        generateQRCode();
+    }, 200);
+}
+
+function createElectricBurst(element) {
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    for (let i = 0; i < 8; i++) {
+        const spark = document.createElement('div');
+        const angle = (i / 8) * 2 * Math.PI;
+        const distance = 50;
+
+        spark.style.cssText = `
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: #ffd700;
+            border-radius: 50%;
+            left: ${centerX}px;
+            top: ${centerY}px;
+            z-index: 9999;
+            box-shadow: 0 0 10px #ffd700;
+            animation: sparkBurst 0.6s ease-out forwards;
+            --end-x: ${Math.cos(angle) * distance}px;
+            --end-y: ${Math.sin(angle) * distance}px;
+        `;
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkBurst {
+                to {
+                    transform: translate(var(--end-x), var(--end-y));
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(spark);
+
+        setTimeout(() => {
+            spark.remove();
+            style.remove();
+        }, 600);
+    }
+}
+
+function downloadQRCode() {
+    if (!qrGenerator.dataURL) {
+        showStatus('⚡ QR code not ready. Please wait for generation to complete.', 'error');
+        return;
+    }
+
+    try {
+        const link = document.createElement('a');
+        link.download = 'thunder-qr-code.png';
+        link.href = qrGenerator.dataURL;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        showStatus('⚡ Download struck like lightning!', 'success');
+        console.log('⚡ Thunder download initiated');
