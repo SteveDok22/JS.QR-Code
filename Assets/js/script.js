@@ -549,4 +549,4 @@ function showError(message) {
 }
 
 // Initialize everything
-console.log('⚡ Thunder QR Generator loaded successfully!');
+console.log('⚡ Thunder QR Generator loaded successfully!'); 
