@@ -493,3 +493,60 @@ function downloadQRCode() {
 
         showStatus('⚡ Download struck like lightning!', 'success');
         console.log('⚡ Thunder download initiated');
+        // Electric download effect
+        const downloadBtn = document.getElementById('downloadBtn');
+        downloadBtn.style.background = 'var(--success-gradient)';
+        downloadBtn.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.8)';
+
+        createElectricBurst(downloadBtn);
+
+        setTimeout(() => {
+            downloadBtn.style.background = '';
+            downloadBtn.style.boxShadow = '';
+        }, 2000);
+
+    } catch (error) {
+        console.error('⚡ Thunder download failed:', error);
+        showStatus('⚡ Download failed. Right-click the QR code and "Save image as..."', 'error');
+    }
+}
+
+function showStatus(message, type) {
+    const statusDiv = document.getElementById('status');
+    statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+
+    const statusElement = statusDiv.querySelector('.status');
+    setTimeout(() => {
+        statusElement.classList.add('show');
+    }, 10);
+
+    if (type === 'success' || type === 'loading') {
+        setTimeout(() => {
+            statusElement.classList.remove('show');
+            setTimeout(() => {
+                statusDiv.innerHTML = '';
+            }, 300);
+        }, 3000);
+    }
+}
+
+function showError(message) {
+    const qrContainer = document.getElementById('qrcode');
+    qrContainer.innerHTML = `
+        <div class="error">
+            <strong>⚡ System Error:</strong><br>
+            ${message}
+            <br><br>
+            <button onclick="regenerateQRCode()" style="background: var(--secondary-gradient); color: white; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; font-family: Orbitron; text-transform: uppercase; border: 1px solid rgba(255, 0, 110, 0.3);">
+                ⚡ Retry
+            </button>
+        </div>
+    `;
+    showStatus(`⚡ ${message}`, 'error');
+
+    // Electric error effect
+    triggerLightningFlash();
+}
+
+// Initialize everything
+console.log('⚡ Thunder QR Generator loaded successfully!');
