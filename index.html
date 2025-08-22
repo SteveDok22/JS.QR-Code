@@ -26,33 +26,42 @@
 
     <div class="container">
         <div class="header">
-            <h2> QR GENERATOR </h2>
-            <p>Create electrifying QR codes for your resume</p>
+            <h2>⚡ QR GENERATOR ⚡</h2>
+            <p>Create electrifying QR codes for any URL</p>
+        </div>
+
+        <!-- URL Input Section -->
+        <div class="url-input-section">
+            <div class="input-container">
+                <input type="url" id="urlInput" placeholder="Enter your URL here..."
+                    value="https://stevedok22.github.io/Project-CV-Code-0.2/">
+                <button id="generateBtn" class="btn btn-generate">⚡ Generate</button>
+            </div>
+            <div class="url-suggestions" id="urlSuggestions"></div>
         </div>
 
         <div id="qrcode">
             <div class="loading">⚡ Generating QR code</div>
         </div>
 
-        <div class="url-container">
-            <div class="url">
-                https://stevedok22.github.io/Project-CV-Code-0.2/
-            </div>
+        <div class="url" id="currentUrl">
+            https://stevedok22.github.io/Project-CV-Code-0.2/
         </div>
+    </div>
 
-        <div class="info">
-            <strong>⚙️ Configuration:</strong><br>
-            Resolution: 300px | Margin: 2 | Theme: Thunder Black
-        </div>
+    <div class="info">
+        <strong>⚙️ Configuration:</strong><br>
+        Resolution: 300px | Margin: 2 | Theme: Thunder Black
+    </div>
 
-        <div class="buttons">
-            <button id="downloadBtn" class="btn" disabled>⬇ Download</button>
-            <button id="regenerateBtn" class="btn btn-secondary" disabled>🔄 Regenerate</button>
-        </div>
+    <div class="buttons">
+        <button id="downloadBtn" class="btn" disabled>⬇ Download</button>
+        <button id="regenerateBtn" class="btn btn-secondary" disabled>🔄 Regenerate</button>
+    </div>
 
-        <div id="status"></div>
+    <div id="status"></div>
 
-        <p class="footer-text"><em>⚡ Powered by lightning-fast generation technology</em></p>
+    <p class="footer-text"><em>⚡ Powered by lightning-fast generation technology</em></p>
     </div>
 
     <script src="Assets/js/script.js"></script>
