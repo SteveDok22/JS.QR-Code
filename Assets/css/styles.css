@@ -309,6 +309,24 @@ body {
     background: rgba(255, 255, 255, 0.1);
 }
 
+#urlInput::placeholder {
+    color: var(--text-secondary);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+}
+
+.btn-generate {
+    background: var(--thunder-gradient);
+    min-width: 140px;
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+    border-color: rgba(255, 215, 0, 0.3);
+}
+
+.btn-generate:hover:not(:disabled) {
+    box-shadow: 0 15px 30px rgba(255, 215, 0, 0.5);
+    border-color: #ffd700;
+}
+
 .header h2 {
     color: var(--text-primary);
     margin-bottom: 15px;
