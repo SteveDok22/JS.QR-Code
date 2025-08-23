@@ -275,6 +275,19 @@ body {
     animation: fadeIn 1s ease-out 0.3s both;
 }
 
+/* URL Input Section */
+.url-input-section {
+    margin: 30px 0;
+    animation: fadeIn 1s ease-out 0.4s both;
+}
+
+.input-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: stretch;
+}
+
 .header h2 {
     color: var(--text-primary);
     margin-bottom: 15px;
