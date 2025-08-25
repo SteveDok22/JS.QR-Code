@@ -1,10 +1,48 @@
 // Enhanced QR Generator with thunder effects
 class ThunderQRGenerator {
     constructor() {
-        this.url = 'https://stevedok22.github.io/Project-CV-Code-0.2/';
+        this.defaultUrl = 'https://stevedok22.github.io/Project-CV-Code-0.2/';
+        this.url = this.defaultUrl;
         this.size = 300;
         this.canvas = null;
         this.dataURL = '';
+        this.urlHistory = this.loadUrlHistory();
+    }
+
+    setUrl(url) {
+        this.url = url;
+        this.addToHistory(url);
+    }
+
+    loadUrlHistory() {
+        try {
+            const saved = localStorage.getItem('qr-url-history');
+            if (saved) {
+                return JSON.parse(saved).slice(0, 5); // Keep only last 5
+            }
+        } catch (e) {
+            console.log('Error loading URL history:', e);
+        }
+        return [];
+    }
+
+    addToHistory(url) {
+        // Remove if already exists
+        this.urlHistory = this.urlHistory.filter(item => item !== url);
+        // Add to beginning
+        this.urlHistory.unshift(url);
+        // Keep only last 5
+        this.urlHistory = this.urlHistory.slice(0, 5);
+        // Save to localStorage
+        try {
+            localStorage.setItem('qr-url-history', JSON.stringify(this.urlHistory));
+        } catch (e) {
+            console.log('Error saving URL history:', e);
+        }
+    }
+
+    getUrlHistory() {
+        return this.urlHistory;
     }
 
     async generateWithQRServer() {
