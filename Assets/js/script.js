@@ -235,17 +235,33 @@ document.addEventListener('DOMContentLoaded', function () {
 function setupEventListeners() {
     const downloadBtn = document.getElementById('downloadBtn');
     const regenerateBtn = document.getElementById('regenerateBtn');
+    const generateBtn = document.getElementById('generateBtn');
+    const urlInput = document.getElementById('urlInput');
 
     downloadBtn.addEventListener('click', downloadQRCode);
     regenerateBtn.addEventListener('click', regenerateQRCode);
+    generateBtn.addEventListener('click', handleGenerateClick);
+
+    // Handle Enter key in input
+    urlInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleGenerateClick();
+        }
+    });
+
+    // Real-time URL validation
+    urlInput.addEventListener('input', validateUrl);
 
     // Add electric click effects
-    [downloadBtn, regenerateBtn].forEach(btn => {
+    [downloadBtn, regenerateBtn, generateBtn].forEach(btn => {
         btn.addEventListener('click', function (e) {
             createElectricRipple(e, this);
         });
     });
-}
+
+    // Setup URL suggestions
+    setupUrlSuggestions();
+} S
 
 function addThunderEffects() {
     const container = document.querySelector('.container');
