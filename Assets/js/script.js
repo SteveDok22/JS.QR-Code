@@ -228,8 +228,17 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('⚡ Initializing Thunder QR Generator...');
     createStarfield();
     setupEventListeners();
+
+    // Initialize with default URL
+    const urlInput = document.getElementById('urlInput');
+    qrGenerator.setUrl(urlInput.value);
+    document.getElementById('currentUrl').textContent = urlInput.value;
+
     generateQRCode();
     addThunderEffects();
+
+    // Make selectSuggestion globally available
+    window.selectSuggestion = selectSuggestion;
 });
 
 function setupEventListeners() {
