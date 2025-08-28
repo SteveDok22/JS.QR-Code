@@ -612,4 +612,94 @@ function showError(message) {
 }
 
 // Initialize everything
+function validateUrl() {
+    const urlInput = document.getElementById('urlInput');
+    const generateBtn = document.getElementById('generateBtn');
+    const url = urlInput.value.trim();
+
+    try {
+        if (url === '') {
+            urlInput.style.borderColor = 'var(--card-border)';
+            generateBtn.disabled = true;
+            return false;
+        }
+
+        new URL(url);
+        urlInput.style.borderColor = 'var(--text-accent)';
+        urlInput.style.boxShadow = '0 0 15px rgba(0, 255, 136, 0.3)';
+        generateBtn.disabled = false;
+        return true;
+    } catch (e) {
+        urlInput.style.borderColor = '#ff006e';
+        urlInput.style.boxShadow = '0 0 15px rgba(255, 0, 110, 0.3)';
+        generateBtn.disabled = true;
+        return false;
+    }
+}
+
+function handleGenerateClick() {
+    const urlInput = document.getElementById('urlInput');
+    const url = urlInput.value.trim();
+
+    if (!validateUrl()) {
+        showStatus('⚡ Please enter a valid URL', 'error');
+        return;
+    }
+
+    // Update generator URL
+    qrGenerator.setUrl(url);
+
+    // Update current URL display
+    document.getElementById('currentUrl').textContent = url;
+
+    // Update suggestions
+    setupUrlSuggestions();
+
+    // Generate new QR code
+    generateQRCode();
+}
+
+function setupUrlSuggestions() {
+    const suggestionsContainer = document.getElementById('urlSuggestions');
+    const history = qrGenerator.getUrlHistory();
+
+    // Popular suggestions
+    const popularSuggestions = [
+        'https://github.com/username',
+        'https://linkedin.com/in/username',
+        'https://your-portfolio.com',
+        'https://your-resume.pdf'
+    ];
+
+    let suggestionsHTML = '';
+
+    // Add recent URLs
+    if (history.length > 0) {
+        history.forEach(url => {
+            const shortUrl = url.length > 30 ? url.substring(0, 30) + '...' : url;
+            suggestionsHTML += `<div class="url-suggestion recent" onclick="selectSuggestion('${url.replace(/'/g, "\\'")}')" title="${url}">📍 ${shortUrl}</div>`;
+        });
+    }
+
+    // Add popular suggestions (only if not in history)
+    popularSuggestions.forEach(url => {
+        if (!history.includes(url)) {
+            suggestionsHTML += `<div class="url-suggestion" onclick="selectSuggestion('${url}')" title="${url}">💡 ${url}</div>`;
+        }
+    });
+
+    suggestionsContainer.innerHTML = suggestionsHTML;
+}
+
+function selectSuggestion(url) {
+    const urlInput = document.getElementById('urlInput');
+    urlInput.value = url;
+    validateUrl();
+
+    // Add electric effect to input
+    urlInput.style.background = 'rgba(0, 212, 255, 0.1)';
+    setTimeout(() => {
+        urlInput.style.background = '';
+    }, 500);
+}
 console.log('⚡ Thunder QR Generator loaded successfully!'); 
