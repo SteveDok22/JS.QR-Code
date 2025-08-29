@@ -547,7 +547,19 @@ function downloadQRCode() {
 
     try {
         const link = document.createElement('a');
-        link.download = 'thunder-qr-code.png';
+        // Create filename from URL
+        const url = qrGenerator.url;
+        let filename = 'thunder-qr-code.png';
+
+        try {
+            const urlObj = new URL(url);
+            const domain = urlObj.hostname.replace(/[^a-zA-Z0-9]/g, '-');
+            filename = `qr-${domain}.png`;
+        } catch (e) {
+            // Use default filename if URL parsing fails
+        }
+
+        link.download = filename;
         link.href = qrGenerator.dataURL;
 
         document.body.appendChild(link);
