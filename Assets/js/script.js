@@ -231,6 +231,7 @@ function createElectricParticle() {
 // Enhanced application logic with thunder effects
 let qrGenerator = new ThunderQRGenerator();
 let isGenerating = false;
+let animationIntervals = []; // ADD THIS LINE
 
 document.addEventListener('DOMContentLoaded', function () {
     console.log('⚡ Initializing Thunder QR Generator...');
