@@ -1,4 +1,12 @@
 // Enhanced QR Generator with thunder effects
+function isValidHttpUrl(url) {
+    try {
+        const parsed = new URL(url);
+        return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+        return false;
+    }
+}
 class ThunderQRGenerator {
     constructor() {
         this.defaultUrl = 'https://stevedok22.github.io/Project-CV-Code-0.2/';
