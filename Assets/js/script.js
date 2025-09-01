@@ -233,6 +233,30 @@ let qrGenerator = new ThunderQRGenerator();
 let isGenerating = false;
 let animationIntervals = []; // ADD THIS LINE
 
+const UI_ELEMENTS = {
+    downloadBtn: null,
+    regenerateBtn: null,
+    generateBtn: null,
+    urlInput: null,
+    qrcode: null,
+    currentUrl: null,
+    status: null,
+    progressBar: null,
+    urlSuggestions: null
+};
+
+function cacheUIElements() {
+    UI_ELEMENTS.downloadBtn = document.getElementById('downloadBtn');
+    UI_ELEMENTS.regenerateBtn = document.getElementById('regenerateBtn');
+    UI_ELEMENTS.generateBtn = document.getElementById('generateBtn');
+    UI_ELEMENTS.urlInput = document.getElementById('urlInput');
+    UI_ELEMENTS.qrcode = document.getElementById('qrcode');
+    UI_ELEMENTS.currentUrl = document.getElementById('currentUrl');
+    UI_ELEMENTS.status = document.getElementById('status');
+    UI_ELEMENTS.progressBar = document.getElementById('progressBar');
+    UI_ELEMENTS.urlSuggestions = document.getElementById('urlSuggestions');
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     console.log('⚡ Initializing Thunder QR Generator...');
     createStarfield();
