@@ -26,10 +26,17 @@ class ThunderQRGenerator {
         try {
             const saved = localStorage.getItem('qr-url-history');
             if (saved) {
-                return JSON.parse(saved).slice(0, 5); // Keep only last 5
+                return JSON.parse(saved).slice(0, 5);
             }
         } catch (e) {
-            console.log('Error loading URL history:', e);
+            console.warn('Failed to load URL history:', e);
+            // Try sessionStorage as fallback
+            try {
+                const sessionSaved = sessionStorage.getItem('qr-url-history');
+                return sessionSaved ? JSON.parse(sessionSaved).slice(0, 5) : [];
+            } catch (e2) {
+                console.warn('Failed to load from sessionStorage:', e2);
+            }
         }
         return [];
     }
