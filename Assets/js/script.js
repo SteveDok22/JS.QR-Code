@@ -42,17 +42,22 @@ class ThunderQRGenerator {
     }
 
     addToHistory(url) {
-        // Remove if already exists
+        if (!isValidHttpUrl(url)) return; // Add validation
+
         this.urlHistory = this.urlHistory.filter(item => item !== url);
-        // Add to beginning
         this.urlHistory.unshift(url);
-        // Keep only last 5
         this.urlHistory = this.urlHistory.slice(0, 5);
-        // Save to localStorage
+
         try {
             localStorage.setItem('qr-url-history', JSON.stringify(this.urlHistory));
         } catch (e) {
-            console.log('Error saving URL history:', e);
+            console.warn('Failed to save to localStorage:', e);
+            // Fallback to sessionStorage
+            try {
+                sessionStorage.setItem('qr-url-history', JSON.stringify(this.urlHistory));
+            } catch (e2) {
+                console.warn('Failed to save to sessionStorage:', e2);
+            }
         }
     }
 
