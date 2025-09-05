@@ -758,3 +758,4 @@ function createStarfield() {
         }, 500);
     }
     console.log('⚡ Thunder QR Generator loaded successfully!'); 
+}
