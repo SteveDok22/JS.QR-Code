@@ -241,7 +241,7 @@ function createStarfield() {
     // Enhanced application logic with thunder effects
     let qrGenerator = new ThunderQRGenerator();
     let isGenerating = false;
-    let animationIntervals = []; 
+    let animationIntervals = [];
 
     const UI_ELEMENTS = {
         downloadBtn: null,
@@ -269,13 +269,16 @@ function createStarfield() {
 
     document.addEventListener('DOMContentLoaded', function () {
         console.log('⚡ Initializing Thunder QR Generator...');
+
+        // Cache elements first
+        cacheUIElements();
+
         createStarfield();
         setupEventListeners();
 
         // Initialize with default URL
-        const urlInput = document.getElementById('urlInput');
-        qrGenerator.setUrl(urlInput.value);
-        document.getElementById('currentUrl').textContent = urlInput.value;
+        qrGenerator.setUrl(UI_ELEMENTS.urlInput.value);
+        UI_ELEMENTS.currentUrl.textContent = UI_ELEMENTS.urlInput.value;
 
         generateQRCode();
         addThunderEffects();
@@ -757,5 +760,5 @@ function createStarfield() {
             urlInput.style.background = '';
         }, 500);
     }
-    console.log('⚡ Thunder QR Generator loaded successfully!'); 
+    console.log('⚡ Thunder QR Generator loaded successfully!');
 }
