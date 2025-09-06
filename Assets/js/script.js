@@ -241,7 +241,7 @@ function createStarfield() {
     // Enhanced application logic with thunder effects
     let qrGenerator = new ThunderQRGenerator();
     let isGenerating = false;
-    let animationIntervals = []; // ADD THIS LINE
+    let animationIntervals = []; 
 
     const UI_ELEMENTS = {
         downloadBtn: null,
