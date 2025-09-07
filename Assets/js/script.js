@@ -671,26 +671,27 @@ function createStarfield() {
 
     // Initialize everything
     function validateUrl() {
-        const urlInput = document.getElementById('urlInput');
-        const generateBtn = document.getElementById('generateBtn');
-        const url = urlInput.value.trim();
+        const url = UI_ELEMENTS.urlInput.value.trim();
 
         try {
             if (url === '') {
-                urlInput.style.borderColor = 'var(--card-border)';
-                generateBtn.disabled = true;
+                UI_ELEMENTS.urlInput.style.borderColor = 'var(--card-border)';
+                UI_ELEMENTS.generateBtn.disabled = true;
                 return false;
             }
 
-            new URL(url);
-            urlInput.style.borderColor = 'var(--text-accent)';
-            urlInput.style.boxShadow = '0 0 15px rgba(0, 255, 136, 0.3)';
-            generateBtn.disabled = false;
+            if (!isValidHttpUrl(url)) {
+                throw new Error('Invalid protocol');
+            }
+
+            UI_ELEMENTS.urlInput.style.borderColor = 'var(--text-accent)';
+            UI_ELEMENTS.urlInput.style.boxShadow = '0 0 15px rgba(0, 255, 136, 0.3)';
+            UI_ELEMENTS.generateBtn.disabled = false;
             return true;
         } catch (e) {
-            urlInput.style.borderColor = '#ff006e';
-            urlInput.style.boxShadow = '0 0 15px rgba(255, 0, 110, 0.3)';
-            generateBtn.disabled = true;
+            UI_ELEMENTS.urlInput.style.borderColor = '#ff006e';
+            UI_ELEMENTS.urlInput.style.boxShadow = '0 0 15px rgba(255, 0, 110, 0.3)';
+            UI_ELEMENTS.generateBtn.disabled = true;
             return false;
         }
     }
