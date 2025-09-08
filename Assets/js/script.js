@@ -719,10 +719,12 @@ function createStarfield() {
     }
 
     function setupUrlSuggestions() {
-        const suggestionsContainer = document.getElementById('urlSuggestions');
+        const suggestionsContainer = UI_ELEMENTS.urlSuggestions;
         const history = qrGenerator.getUrlHistory();
 
-        // Popular suggestions
+        // Clear existing suggestions
+        suggestionsContainer.innerHTML = '';
+
         const popularSuggestions = [
             'https://github.com/username',
             'https://linkedin.com/in/username',
@@ -730,24 +732,30 @@ function createStarfield() {
             'https://your-resume.pdf'
         ];
 
-        let suggestionsHTML = '';
-
-        // Add recent URLs
-        if (history.length > 0) {
-            history.forEach(url => {
+        // Add recent URLs - SECURE VERSION
+        history.forEach(url => {
+            if (isValidHttpUrl(url)) {
                 const shortUrl = url.length > 30 ? url.substring(0, 30) + '...' : url;
-                suggestionsHTML += `<div class="url-suggestion recent" onclick="selectSuggestion('${url.replace(/'/g, "\\'")}')" title="${url}">📍 ${shortUrl}</div>`;
-            });
-        }
-
-        // Add popular suggestions (only if not in history)
-        popularSuggestions.forEach(url => {
-            if (!history.includes(url)) {
-                suggestionsHTML += `<div class="url-suggestion" onclick="selectSuggestion('${url}')" title="${url}">💡 ${url}</div>`;
+                const suggestion = document.createElement('div');
+                suggestion.className = 'url-suggestion recent';
+                suggestion.textContent = `📍 ${shortUrl}`;
+                suggestion.title = url;
+                suggestion.addEventListener('click', () => selectSuggestion(url));
+                suggestionsContainer.appendChild(suggestion);
             }
         });
 
-        suggestionsContainer.innerHTML = suggestionsHTML;
+        // Add popular suggestions
+        popularSuggestions.forEach(url => {
+            if (!history.includes(url)) {
+                const suggestion = document.createElement('div');
+                suggestion.className = 'url-suggestion';
+                suggestion.textContent = `💡 ${url}`;
+                suggestion.title = url;
+                suggestion.addEventListener('click', () => selectSuggestion(url));
+                suggestionsContainer.appendChild(suggestion);
+            }
+        });
     }
 
     function selectSuggestion(url) {
