@@ -214,6 +214,25 @@ function createStarfield() {
         }
     }, 1000));
 
+    // Enhanced application logic with thunder effects
+    let qrGenerator = new ThunderQRGenerator();
+    let isGenerating = false;
+    let animationIntervals = [];
+
+    const UI_ELEMENTS = {
+        downloadBtn: null,
+        regenerateBtn: null,
+        generateBtn: null,
+        urlInput: null,
+        qrcode: null,
+        currentUrl: null,
+        status: null,
+        progressBar: null,
+        urlSuggestions: null
+    }; }, 6000);
+    }
+
+
     function createShootingStar() {
         const shootingStar = document.createElement('div');
         shootingStar.className = 'shooting-star';
@@ -235,25 +254,7 @@ function createStarfield() {
 
         setTimeout(() => {
             particle.remove();
-        }, 6000);
-    }
-
-    // Enhanced application logic with thunder effects
-    let qrGenerator = new ThunderQRGenerator();
-    let isGenerating = false;
-    let animationIntervals = [];
-
-    const UI_ELEMENTS = {
-        downloadBtn: null,
-        regenerateBtn: null,
-        generateBtn: null,
-        urlInput: null,
-        qrcode: null,
-        currentUrl: null,
-        status: null,
-        progressBar: null,
-        urlSuggestions: null
-    };
+        
 
     function cacheUIElements() {
         UI_ELEMENTS.downloadBtn = document.getElementById('downloadBtn');
