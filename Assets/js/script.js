@@ -772,3 +772,273 @@ function createStarfield() {
     }
     console.log('⚡ Thunder QR Generator loaded successfully!');
 }
+
+/**
+ * Personal Finance Dashboard - Sound Effects System
+ * Hover sound effects with accessibility considerations
+ */
+
+// Sound system configuration
+const SoundSystem = {
+    enabled: true,
+    volume: 0.3,
+    sounds: {},
+    preferencesKey: 'financeApp_soundPreferences'
+};
+
+/**
+ * Initialize sound system
+ */
+function initializeSoundSystem() {
+    try {
+        // Load user preferences
+        loadSoundPreferences();
+        
+        // Create sound objects using Web Audio API (better than HTML5 audio for short sounds)
+        createSoundEffects();
+        
+        // Add sound toggle control
+        addSoundToggleControl();
+        
+        // Set up hover listeners
+        setupSoundHoverListeners();
+        
+        console.log('Sound system initialized');
+        
+    } catch (error) {
+        console.error('Sound system initialization failed:', error);
+        SoundSystem.enabled = false;
+    }
+}
+
+/**
+ * Create sound effects using synthesized audio
+ */
+function createSoundEffects() {
+    // Create AudioContext
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    SoundSystem.sounds = {
+        // Button hover sound - soft beep
+        buttonHover: createToneSound(audioContext, 800, 0.1, 'sine'),
+        
+        // Card hover sound - gentle chime  
+        cardHover: createToneSound(audioContext, 600, 0.15, 'triangle'),
+        
+        // Success sound - pleasant ding
+        success: createToneSound(audioContext, 1000, 0.2, 'sine'),
+        
+        // Error sound - gentle warning
+        error: createToneSound(audioContext, 300, 0.2, 'sawtooth')
+    };
+}
+
+/**
+ * Create synthesized tone sound
+ */
+function createToneSound(audioContext, frequency, duration, waveType = 'sine') {
+    return {
+        play: () => {
+            if (!SoundSystem.enabled) return;
+            
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                // Configure oscillator
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                oscillator.type = waveType;
+                
+                // Configure gain (volume)
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(SoundSystem.volume, audioContext.currentTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+                
+                // Connect nodes
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Play sound
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+                
+            } catch (error) {
+                console.error('Sound playback error:', error);
+            }
+        }
+    };
+}
+
+/**
+ * Set up hover sound listeners
+ */
+function setupSoundHoverListeners() {
+    // Throttle hover events to prevent sound spam
+    const throttledPlay = throttle(playHoverSound, 100);
+    
+    // Button hover sounds
+    document.addEventListener('mouseover', (e) => {
+        if (!SoundSystem.enabled) return;
+        
+        const target = e.target.closest('.btn, .action-btn, .nav-link');
+        if (target) {
+            throttledPlay('buttonHover');
+        }
+    });
+    
+    // Card hover sounds
+    document.addEventListener('mouseover', (e) => {
+        if (!SoundSystem.enabled) return;
+        
+        const target = e.target.closest('.stat-card, .category-card, .transaction-item, .metric-card');
+        if (target) {
+            throttledPlay('cardHover');
+        }
+    });
+    
+    // Respect user's motion preferences
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        SoundSystem.enabled = false;
+    }
+}
+
+/**
+ * Play hover sound
+ */
+function playHoverSound(soundType) {
+    if (SoundSystem.sounds[soundType]) {
+        SoundSystem.sounds[soundType].play();
+    }
+}
+
+/**
+ * Play notification sounds
+ */
+function playNotificationSound(type) {
+    if (!SoundSystem.enabled) return;
+    
+    const soundMap = {
+        success: 'success',
+        error: 'error',
+        warning: 'error',
+        info: 'success'
+    };
+    
+    const soundType = soundMap[type] || 'success';
+    if (SoundSystem.sounds[soundType]) {
+        SoundSystem.sounds[soundType].play();
+    }
+}
+
+/**
+ * Add sound toggle control to UI
+ */
+function addSoundToggleControl() {
+    // Add toggle button to header
+    const nav = document.querySelector('.nav-menu');
+    if (nav) {
+        const soundToggle = document.createElement('li');
+        soundToggle.innerHTML = `
+            <button class="nav-link sound-toggle" 
+                    id="sound-toggle" 
+                    aria-label="Toggle sound effects"
+                    title="Toggle sound effects">
+                <span class="sound-icon">${SoundSystem.enabled ? '🔊' : '🔇'}</span>
+            </button>
+        `;
+        
+        nav.appendChild(soundToggle);
+        
+        // Add click handler
+        const toggleButton = soundToggle.querySelector('#sound-toggle');
+        toggleButton.addEventListener('click', toggleSounds);
+    }
+}
+
+/**
+ * Toggle sound system on/off
+ */
+function toggleSounds() {
+    SoundSystem.enabled = !SoundSystem.enabled;
+    saveSoundPreferences();
+    
+    // Update toggle button
+    const toggleButton = document.getElementById('sound-toggle');
+    const icon = toggleButton.querySelector('.sound-icon');
+    if (icon) {
+        icon.textContent = SoundSystem.enabled ? '🔊' : '🔇';
+    }
+    
+    // Play confirmation sound
+    if (SoundSystem.enabled && SoundSystem.sounds.success) {
+        setTimeout(() => SoundSystem.sounds.success.play(), 100);
+    }
+    
+    // Show notification
+    showNotification(
+        `Sound effects ${SoundSystem.enabled ? 'enabled' : 'disabled'}`, 
+        'info'
+    );
+}
+
+/**
+ * Load sound preferences from localStorage
+ */
+function loadSoundPreferences() {
+    try {
+        const saved = localStorage.getItem(SoundSystem.preferencesKey);
+        if (saved) {
+            const prefs = JSON.parse(saved);
+            SoundSystem.enabled = prefs.enabled !== false; // Default to true
+            SoundSystem.volume = prefs.volume || 0.3;
+        }
+    } catch (error) {
+        console.error('Failed to load sound preferences:', error);
+    }
+}
+
+/**
+ * Save sound preferences to localStorage
+ */
+function saveSoundPreferences() {
+    try {
+        const prefs = {
+            enabled: SoundSystem.enabled,
+            volume: SoundSystem.volume
+        };
+        localStorage.setItem(SoundSystem.preferencesKey, JSON.stringify(prefs));
+    } catch (error) {
+        console.error('Failed to save sound preferences:', error);
+    }
+}
+
+/**
+ * Throttle function to prevent sound spam
+ */
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
+
+// Initialize sound system when DOM loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Small delay to ensure other systems are loaded
+    setTimeout(initializeSoundSystem, 500);
+});
+
+// Override showNotification to include sounds
+const originalShowNotification = window.showNotification;
+window.showNotification = function(message, type) {
+    if (originalShowNotification) {
+        originalShowNotification(message, type);
+    }
+    playNotificationSound(type);
+};
