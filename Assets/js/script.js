@@ -7,6 +7,7 @@ function isValidHttpUrl(url) {
         return false;
     }
 }
+
 class ThunderQRGenerator {
     constructor() {
         this.defaultUrl = 'https://stevedok22.github.io/Project-CV-Code-0.2/';
@@ -30,7 +31,6 @@ class ThunderQRGenerator {
             }
         } catch (e) {
             console.warn('Failed to load URL history:', e);
-            // Try sessionStorage as fallback
             try {
                 const sessionSaved = sessionStorage.getItem('qr-url-history');
                 return sessionSaved ? JSON.parse(sessionSaved).slice(0, 5) : [];
@@ -42,7 +42,7 @@ class ThunderQRGenerator {
     }
 
     addToHistory(url) {
-        if (!isValidHttpUrl(url)) return; // Add validation
+        if (!isValidHttpUrl(url)) return;
 
         this.urlHistory = this.urlHistory.filter(item => item !== url);
         this.urlHistory.unshift(url);
@@ -52,7 +52,6 @@ class ThunderQRGenerator {
             localStorage.setItem('qr-url-history', JSON.stringify(this.urlHistory));
         } catch (e) {
             console.warn('Failed to save to localStorage:', e);
-            // Fallback to sessionStorage
             try {
                 sessionStorage.setItem('qr-url-history', JSON.stringify(this.urlHistory));
             } catch (e2) {
@@ -136,17 +135,16 @@ class ThunderQRGenerator {
             throw new Error('QR generation failed: ' + error.message);
         }
     }
+
     createFallback() {
         const canvas = document.createElement('canvas');
         canvas.width = this.size;
         canvas.height = this.size;
         const ctx = canvas.getContext('2d');
 
-        // Black background
         ctx.fillStyle = '#000000';
         ctx.fillRect(0, 0, this.size, this.size);
 
-        // Electric border
         const gradient = ctx.createLinearGradient(0, 0, this.size, this.size);
         gradient.addColorStop(0, '#00d4ff');
         gradient.addColorStop(0.5, '#ffd700');
@@ -158,7 +156,6 @@ class ThunderQRGenerator {
         ctx.fillRect(this.size - 20, 0, 20, this.size);
         ctx.fillRect(0, this.size - 20, this.size, 20);
 
-        // Center text
         ctx.fillStyle = '#00d4ff';
         ctx.font = 'bold 16px Orbitron, Arial';
         ctx.textAlign = 'center';
@@ -187,7 +184,23 @@ class ThunderQRGenerator {
     }
 }
 
-// Initialize starfield
+// Global variables
+let qrGenerator = new ThunderQRGenerator();
+let isGenerating = false;
+let animationIntervals = [];
+
+const UI_ELEMENTS = {
+    downloadBtn: null,
+    regenerateBtn: null,
+    generateBtn: null,
+    urlInput: null,
+    qrcode: null,
+    currentUrl: null,
+    status: null,
+    progressBar: null,
+    urlSuggestions: null
+};
+
 function createStarfield() {
     const starsContainer = document.getElementById('stars');
     const numStars = 200;
@@ -201,7 +214,6 @@ function createStarfield() {
         starsContainer.appendChild(star);
     }
 
-    // Store interval references for cleanup
     animationIntervals.push(setInterval(() => {
         if (Math.random() > 0.8) {
             createShootingStar();
@@ -213,161 +225,135 @@ function createStarfield() {
             createElectricParticle();
         }
     }, 1000));
+}
 
-    // Enhanced application logic with thunder effects
-    let qrGenerator = new ThunderQRGenerator();
-    let isGenerating = false;
-    let animationIntervals = [];
+function createShootingStar() {
+    const shootingStar = document.createElement('div');
+    shootingStar.className = 'shooting-star';
+    shootingStar.style.left = Math.random() * 100 + '%';
+    shootingStar.style.top = Math.random() * 50 + '%';
+    document.querySelector('.starfield').appendChild(shootingStar);
 
-    const UI_ELEMENTS = {
-        downloadBtn: null,
-        regenerateBtn: null,
-        generateBtn: null,
-        urlInput: null,
-        qrcode: null,
-        currentUrl: null,
-        status: null,
-        progressBar: null,
-        urlSuggestions: null
-    }; }, 6000);
-    }
+    setTimeout(() => {
+        shootingStar.remove();
+    }, 3000);
+}
 
+function createElectricParticle() {
+    const particle = document.createElement('div');
+    particle.className = 'electric-particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 2 + 's';
+    document.querySelector('.thunder-container').appendChild(particle);
 
-    function createShootingStar() {
-        const shootingStar = document.createElement('div');
-        shootingStar.className = 'shooting-star';
-        shootingStar.style.left = Math.random() * 100 + '%';
-        shootingStar.style.top = Math.random() * 50 + '%';
-        document.querySelector('.starfield').appendChild(shootingStar);
+    setTimeout(() => {
+        particle.remove();
+    }, 6000);
+}
 
-        setTimeout(() => {
-            shootingStar.remove();
-        }, 3000);
-    }
+function cleanupAnimations() {
+    animationIntervals.forEach(clearInterval);
+    animationIntervals = [];
+}
 
-    function createElectricParticle() {
-        const particle = document.createElement('div');
-        particle.className = 'electric-particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 2 + 's';
-        document.querySelector('.thunder-container').appendChild(particle);
+window.addEventListener('beforeunload', cleanupAnimations);
 
-        setTimeout(() => {
-            particle.remove();
-        
+function cacheUIElements() {
+    UI_ELEMENTS.downloadBtn = document.getElementById('downloadBtn');
+    UI_ELEMENTS.regenerateBtn = document.getElementById('regenerateBtn');
+    UI_ELEMENTS.generateBtn = document.getElementById('generateBtn');
+    UI_ELEMENTS.urlInput = document.getElementById('urlInput');
+    UI_ELEMENTS.qrcode = document.getElementById('qrcode');
+    UI_ELEMENTS.currentUrl = document.getElementById('currentUrl');
+    UI_ELEMENTS.status = document.getElementById('status');
+    UI_ELEMENTS.progressBar = document.getElementById('progressBar');
+    UI_ELEMENTS.urlSuggestions = document.getElementById('urlSuggestions');
+}
 
-    function cacheUIElements() {
-        UI_ELEMENTS.downloadBtn = document.getElementById('downloadBtn');
-        UI_ELEMENTS.regenerateBtn = document.getElementById('regenerateBtn');
-        UI_ELEMENTS.generateBtn = document.getElementById('generateBtn');
-        UI_ELEMENTS.urlInput = document.getElementById('urlInput');
-        UI_ELEMENTS.qrcode = document.getElementById('qrcode');
-        UI_ELEMENTS.currentUrl = document.getElementById('currentUrl');
-        UI_ELEMENTS.status = document.getElementById('status');
-        UI_ELEMENTS.progressBar = document.getElementById('progressBar');
-        UI_ELEMENTS.urlSuggestions = document.getElementById('urlSuggestions');
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('⚡ Initializing Thunder QR Generator...');
 
-    document.addEventListener('DOMContentLoaded', function () {
-        console.log('⚡ Initializing Thunder QR Generator...');
+    cacheUIElements();
+    createStarfield();
+    setupEventListeners();
 
-        // Cache elements first
-        cacheUIElements();
+    qrGenerator.setUrl(UI_ELEMENTS.urlInput.value);
+    UI_ELEMENTS.currentUrl.textContent = UI_ELEMENTS.urlInput.value;
 
-        createStarfield();
-        setupEventListeners();
+    generateQRCode();
+    addThunderEffects();
 
-        // Initialize with default URL
-        qrGenerator.setUrl(UI_ELEMENTS.urlInput.value);
-        UI_ELEMENTS.currentUrl.textContent = UI_ELEMENTS.urlInput.value;
+    window.selectSuggestion = selectSuggestion;
+});
 
-        generateQRCode();
-        addThunderEffects();
+function setupEventListeners() {
+    UI_ELEMENTS.downloadBtn.addEventListener('click', downloadQRCode);
+    UI_ELEMENTS.regenerateBtn.addEventListener('click', regenerateQRCode);
+    UI_ELEMENTS.generateBtn.addEventListener('click', handleGenerateClick);
 
-        // Make selectSuggestion globally available
-        window.selectSuggestion = selectSuggestion;
+    UI_ELEMENTS.urlInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleGenerateClick();
+        }
     });
 
-    function setupEventListeners() {
-        const downloadBtn = document.getElementById('downloadBtn');
-        const regenerateBtn = document.getElementById('regenerateBtn');
-        const generateBtn = document.getElementById('generateBtn');
-        const urlInput = document.getElementById('urlInput');
+    UI_ELEMENTS.urlInput.addEventListener('input', validateUrl);
 
-        downloadBtn.addEventListener('click', downloadQRCode);
-        regenerateBtn.addEventListener('click', regenerateQRCode);
-        generateBtn.addEventListener('click', handleGenerateClick);
-
-        // Handle Enter key in input
-        urlInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleGenerateClick();
-            }
+    [UI_ELEMENTS.downloadBtn, UI_ELEMENTS.regenerateBtn, UI_ELEMENTS.generateBtn].forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            createElectricRipple(e, this);
         });
+    });
 
-        // Real-time URL validation
-        urlInput.addEventListener('input', validateUrl);
+    setupUrlSuggestions();
+}
 
-        // Add electric click effects
-        [downloadBtn, regenerateBtn, generateBtn].forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                createElectricRipple(e, this);
-            });
-        });
+function addThunderEffects() {
+    const container = document.querySelector('.container');
 
-        // Setup URL suggestions
-        setupUrlSuggestions();
-    } S
+    container.addEventListener('mouseenter', () => {
+        container.style.transform = 'translateY(-8px)';
+        container.style.boxShadow = 'var(--shadow-thunder)';
+    });
 
-    function addThunderEffects() {
+    container.addEventListener('mouseleave', () => {
+        container.style.transform = 'translateY(0)';
+        container.style.boxShadow = 'var(--shadow-primary)';
+    });
+
+    document.addEventListener('mousemove', (e) => {
         const container = document.querySelector('.container');
+        const rect = container.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
 
-        container.addEventListener('mouseenter', () => {
-            container.style.transform = 'translateY(-8px)';
-            container.style.boxShadow = 'var(--shadow-thunder)';
-        });
+        if (x >= 0 && x <= 1 && y >= 0 && y <= 1) {
+            const intensity = Math.min(Math.abs(x - 0.5) + Math.abs(y - 0.5), 1);
+            container.style.filter = `drop-shadow(0 0 ${20 + intensity * 20}px rgba(0, 212, 255, 0.3))`;
+        }
+    });
 
-        container.addEventListener('mouseleave', () => {
-            container.style.transform = 'translateY(0)';
-            container.style.boxShadow = 'var(--shadow-primary)';
-        });
+    setInterval(() => {
+        if (Math.random() > 0.95) {
+            triggerLightningFlash();
+        }
+    }, 3000);
+}
 
-        // Add thunder sound effect simulation
-        document.addEventListener('mousemove', (e) => {
-            const container = document.querySelector('.container');
-            const rect = container.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width;
-            const y = (e.clientY - rect.top) / rect.height;
+function triggerLightningFlash() {
+    const body = document.body;
+    const originalFilter = body.style.filter;
 
-            // Create electric field effect
-            if (x >= 0 && x <= 1 && y >= 0 && y <= 1) {
-                const intensity = Math.min(Math.abs(x - 0.5) + Math.abs(y - 0.5), 1);
-                container.style.filter = `drop-shadow(0 0 ${20 + intensity * 20}px rgba(0, 212, 255, 0.3))`;
-            }
-        });
+    body.style.filter = 'brightness(1.5) saturate(1.2)';
+    body.style.transition = 'filter 0.1s';
 
-        // Random lightning flashes
-        setInterval(() => {
-            if (Math.random() > 0.95) {
-                triggerLightningFlash();
-            }
-        }, 3000);
-    }
+    setTimeout(() => {
+        body.style.filter = originalFilter;
+        body.style.transition = 'filter 0.3s';
+    }, 100);
 
-    function triggerLightningFlash() {
-        const body = document.body;
-        const originalFilter = body.style.filter;
-
-        body.style.filter = 'brightness(1.5) saturate(1.2)';
-        body.style.transition = 'filter 0.1s';
-
-        setTimeout(() => {
-            body.style.filter = originalFilter;
-            body.style.transition = 'filter 0.3s';
-        }, 100);
-        // Create screen flash effect
-        const flash = document.createElement('div');
-        flash.style.cssText = `
+    const flash = document.createElement('div');
+    flash.style.cssText = `
         position: fixed;
         top: 0;
         left: 0;
@@ -379,31 +365,31 @@ function createStarfield() {
         animation: flash 0.2s ease-out;
     `;
 
-        const style = document.createElement('style');
-        style.textContent = `
+    const style = document.createElement('style');
+    style.textContent = `
         @keyframes flash {
             0% { opacity: 0; }
             50% { opacity: 1; }
             100% { opacity: 0; }
         }
     `;
-        document.head.appendChild(style);
-        document.body.appendChild(flash);
+    document.head.appendChild(style);
+    document.body.appendChild(flash);
 
-        setTimeout(() => {
-            flash.remove();
-            style.remove();
-        }, 200);
-    }
+    setTimeout(() => {
+        flash.remove();
+        style.remove();
+    }, 200);
+}
 
-    function createElectricRipple(event, button) {
-        const ripple = document.createElement('span');
-        const rect = button.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = event.clientX - rect.left - size / 2;
-        const y = event.clientY - rect.top - size / 2;
+function createElectricRipple(event, button) {
+    const ripple = document.createElement('span');
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
 
-        ripple.style.cssText = `
+    ripple.style.cssText = `
         position: absolute;
         border-radius: 50%;
         background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, rgba(0, 212, 255, 0.4) 50%, transparent 70%);
@@ -416,8 +402,8 @@ function createStarfield() {
         box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
     `;
 
-        const style = document.createElement('style');
-        style.textContent = `
+    const style = document.createElement('style');
+    style.textContent = `
         @keyframes electricRipple {
             0% {
                 transform: scale(0);
@@ -433,126 +419,113 @@ function createStarfield() {
             }
         }
     `;
-        document.head.appendChild(style);
+    document.head.appendChild(style);
 
-        button.appendChild(ripple);
+    button.appendChild(ripple);
+
+    setTimeout(() => {
+        ripple.remove();
+        style.remove();
+    }, 800);
+}
+
+async function generateQRCode() {
+    if (isGenerating) return;
+    isGenerating = true;
+
+    UI_ELEMENTS.qrcode.innerHTML = '<div class="loading">⚡ Generating QR code</div>';
+    UI_ELEMENTS.downloadBtn.disabled = true;
+    UI_ELEMENTS.regenerateBtn.disabled = true;
+
+    UI_ELEMENTS.progressBar.style.width = '30%';
+    UI_ELEMENTS.progressBar.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.8)';
+    showStatus('⚡ Charging up the generator...', 'loading');
+
+    try {
+        console.log('⚡ Starting Thunder QR generation...');
+        UI_ELEMENTS.progressBar.style.width = '60%';
+
+        const canvas = await qrGenerator.generate();
+        UI_ELEMENTS.progressBar.style.width = '90%';
+
+        UI_ELEMENTS.qrcode.style.opacity = '0';
+        UI_ELEMENTS.qrcode.style.filter = 'brightness(2) saturate(0)';
 
         setTimeout(() => {
-            ripple.remove();
-            style.remove();
-        }, 800);
-    }
+            UI_ELEMENTS.qrcode.innerHTML = '';
+            canvas.style.borderRadius = '12px';
+            canvas.style.boxShadow = '0 8px 25px rgba(0,0,0,0.5), 0 0 20px rgba(0, 212, 255, 0.3)';
+            UI_ELEMENTS.qrcode.appendChild(canvas);
+            UI_ELEMENTS.qrcode.style.opacity = '1';
+            UI_ELEMENTS.qrcode.style.filter = 'brightness(1) saturate(1)';
+            UI_ELEMENTS.qrcode.style.transition = 'all 0.5s ease';
 
-    async function generateQRCode() {
-        if (isGenerating) return;
-        isGenerating = true;
-
-        const qrContainer = document.getElementById('qrcode');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const regenerateBtn = document.getElementById('regenerateBtn');
-        const progressBar = document.getElementById('progressBar');
-
-        // Show loading with electric effect
-        qrContainer.innerHTML = '<div class="loading">⚡ Generating QR code</div>';
-        downloadBtn.disabled = true;
-        regenerateBtn.disabled = true;
-
-        // Animate progress bar with electric glow
-        progressBar.style.width = '30%';
-        progressBar.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.8)';
-        showStatus('⚡ Charging up the generator...', 'loading');
-
-        try {
-            console.log('⚡ Starting Thunder QR generation...');
-            progressBar.style.width = '60%';
-
-            const canvas = await qrGenerator.generate();
-            progressBar.style.width = '90%';
-
-            // Electric transition effect
-            qrContainer.style.opacity = '0';
-            qrContainer.style.filter = 'brightness(2) saturate(0)';
+            UI_ELEMENTS.progressBar.style.width = '100%';
+            UI_ELEMENTS.progressBar.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.8)';
 
             setTimeout(() => {
-                qrContainer.innerHTML = '';
-                canvas.style.borderRadius = '12px';
-                canvas.style.boxShadow = '0 8px 25px rgba(0,0,0,0.5), 0 0 20px rgba(0, 212, 255, 0.3)';
-                qrContainer.appendChild(canvas);
-                qrContainer.style.opacity = '1';
-                qrContainer.style.filter = 'brightness(1) saturate(1)';
-                qrContainer.style.transition = 'all 0.5s ease';
+                UI_ELEMENTS.progressBar.style.width = '0%';
+                UI_ELEMENTS.progressBar.style.boxShadow = '0 0 10px rgba(0, 212, 255, 0.8)';
+            }, 500);
+        }, 300);
 
-                // Complete progress with thunder effect
-                progressBar.style.width = '100%';
-                progressBar.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.8)';
+        setTimeout(() => {
+            UI_ELEMENTS.downloadBtn.disabled = false;
+            UI_ELEMENTS.regenerateBtn.disabled = false;
 
-                setTimeout(() => {
-                    progressBar.style.width = '0%';
-                    progressBar.style.boxShadow = '0 0 10px rgba(0, 212, 255, 0.8)';
-                }, 500);
-            }, 300);
+            UI_ELEMENTS.downloadBtn.style.animation = 'fadeIn 0.5s ease-out, electricPulse 1s ease-out';
+            UI_ELEMENTS.regenerateBtn.style.animation = 'fadeIn 0.5s ease-out 0.1s both, electricPulse 1s ease-out 0.1s';
 
-            // Enable buttons with electric animation
-            setTimeout(() => {
-                downloadBtn.disabled = false;
-                regenerateBtn.disabled = false;
-
-                downloadBtn.style.animation = 'fadeIn 0.5s ease-out, electricPulse 1s ease-out';
-                regenerateBtn.style.animation = 'fadeIn 0.5s ease-out 0.1s both, electricPulse 1s ease-out 0.1s';
-
-                // Add electric pulse animation
-                const style = document.createElement('style');
-                style.textContent = `
+            const style = document.createElement('style');
+            style.textContent = `
                 @keyframes electricPulse {
                     0%, 100% { box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3); }
                     50% { box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6); }
                 }
             `;
-                document.head.appendChild(style);
-            }, 500);
+            document.head.appendChild(style);
+        }, 500);
 
-            showStatus('⚡ QR code generated with lightning speed!', 'success');
-            console.log('⚡ Thunder QR code generated successfully');
+        showStatus('⚡ QR code generated with lightning speed!', 'success');
+        console.log('⚡ Thunder QR code generated successfully');
 
-        } catch (error) {
-            console.error('⚡ Thunder generation failed:', error);
-            progressBar.style.width = '0%';
-            progressBar.style.boxShadow = '0 0 20px rgba(255, 0, 110, 0.8)';
-            showError('⚡ Generation failed: ' + error.message);
-            regenerateBtn.disabled = false;
-        } finally {
-            isGenerating = false;
-        }
+    } catch (error) {
+        console.error('⚡ Thunder generation failed:', error);
+        UI_ELEMENTS.progressBar.style.width = '0%';
+        UI_ELEMENTS.progressBar.style.boxShadow = '0 0 20px rgba(255, 0, 110, 0.8)';
+        showError('⚡ Generation failed: ' + error.message);
+        UI_ELEMENTS.regenerateBtn.disabled = false;
+    } finally {
+        isGenerating = false;
     }
+}
 
-    function regenerateQRCode() {
-        console.log('⚡ Regenerating with thunder power...');
+function regenerateQRCode() {
+    console.log('⚡ Regenerating with thunder power...');
 
-        const regenerateBtn = document.getElementById('regenerateBtn');
-        regenerateBtn.style.transform = 'scale(0.95)';
-        regenerateBtn.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.8)';
+    UI_ELEMENTS.regenerateBtn.style.transform = 'scale(0.95)';
+    UI_ELEMENTS.regenerateBtn.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.8)';
 
-        // Create electric burst effect
-        createElectricBurst(regenerateBtn);
+    createElectricBurst(UI_ELEMENTS.regenerateBtn);
 
-        setTimeout(() => {
-            regenerateBtn.style.transform = '';
-            regenerateBtn.style.boxShadow = '';
-            generateQRCode();
-        }, 200);
-    }
+    setTimeout(() => {
+        UI_ELEMENTS.regenerateBtn.style.transform = '';
+        UI_ELEMENTS.regenerateBtn.style.boxShadow = '';
+        generateQRCode();
+    }, 200);
+}
 
-    function createElectricBurst(element) {
-        const rect = element.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
+function createElectricBurst(element) {
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
 
-        for (let i = 0; i < 8; i++) {
-            const spark = document.createElement('div');
-            const angle = (i / 8) * 2 * Math.PI;
-            const distance = 50;
+    for (let i = 0; i < 8; i++) {
+        const spark = document.createElement('div');
+        const angle = (i / 8) * 2 * Math.PI;
+        const distance = 50;
 
-            spark.style.cssText = `
+        spark.style.cssText = `
             position: fixed;
             width: 3px;
             height: 3px;
@@ -567,8 +540,8 @@ function createStarfield() {
             --end-y: ${Math.sin(angle) * distance}px;
         `;
 
-            const style = document.createElement('style');
-            style.textContent = `
+        const style = document.createElement('style');
+        style.textContent = `
             @keyframes sparkBurst {
                 to {
                     transform: translate(var(--end-x), var(--end-y));
@@ -576,85 +549,81 @@ function createStarfield() {
                 }
             }
         `;
-            document.head.appendChild(style);
-            document.body.appendChild(spark);
+        document.head.appendChild(style);
+        document.body.appendChild(spark);
 
-            setTimeout(() => {
-                spark.remove();
-                style.remove();
-            }, 600);
-        }
+        setTimeout(() => {
+            spark.remove();
+            style.remove();
+        }, 600);
+    }
+}
+
+function downloadQRCode() {
+    if (!qrGenerator.dataURL) {
+        showStatus('⚡ QR code not ready. Please wait for generation to complete.', 'error');
+        return;
     }
 
-    function downloadQRCode() {
-        if (!qrGenerator.dataURL) {
-            showStatus('⚡ QR code not ready. Please wait for generation to complete.', 'error');
-            return;
-        }
+    try {
+        const link = document.createElement('a');
+        const url = qrGenerator.url;
+        let filename = 'thunder-qr-code.png';
 
         try {
-            const link = document.createElement('a');
-            // Create filename from URL
-            const url = qrGenerator.url;
-            let filename = 'thunder-qr-code.png';
-
-            try {
-                const urlObj = new URL(url);
-                const domain = urlObj.hostname.replace(/[^a-zA-Z0-9]/g, '-');
-                filename = `qr-${domain}.png`;
-            } catch (e) {
-                // Use default filename if URL parsing fails
-            }
-
-            link.download = filename;
-            link.href = qrGenerator.dataURL;
-
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            showStatus('⚡ Download struck like lightning!', 'success');
-            console.log('⚡ Thunder download initiated');
-            // Electric download effect
-            const downloadBtn = document.getElementById('downloadBtn');
-            downloadBtn.style.background = 'var(--success-gradient)';
-            downloadBtn.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.8)';
-
-            createElectricBurst(downloadBtn);
-
-            setTimeout(() => {
-                downloadBtn.style.background = '';
-                downloadBtn.style.boxShadow = '';
-            }, 2000);
-
-        } catch (error) {
-            console.error('⚡ Thunder download failed:', error);
-            showStatus('⚡ Download failed. Right-click the QR code and "Save image as..."', 'error');
+            const urlObj = new URL(url);
+            const domain = urlObj.hostname.replace(/[^a-zA-Z0-9]/g, '-');
+            filename = `qr-${domain}.png`;
+        } catch (e) {
+            // Use default filename
         }
-    }
 
-    function showStatus(message, type) {
-        const statusDiv = document.getElementById('status');
-        statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        link.download = filename;
+        link.href = qrGenerator.dataURL;
 
-        const statusElement = statusDiv.querySelector('.status');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        showStatus('⚡ Download struck like lightning!', 'success');
+        console.log('⚡ Thunder download initiated');
+
+        UI_ELEMENTS.downloadBtn.style.background = 'var(--success-gradient)';
+        UI_ELEMENTS.downloadBtn.style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.8)';
+
+        createElectricBurst(UI_ELEMENTS.downloadBtn);
+
         setTimeout(() => {
-            statusElement.classList.add('show');
-        }, 10);
+            UI_ELEMENTS.downloadBtn.style.background = '';
+            UI_ELEMENTS.downloadBtn.style.boxShadow = '';
+        }, 2000);
 
-        if (type === 'success' || type === 'loading') {
-            setTimeout(() => {
-                statusElement.classList.remove('show');
-                setTimeout(() => {
-                    statusDiv.innerHTML = '';
-                }, 300);
-            }, 3000);
-        }
+    } catch (error) {
+        console.error('⚡ Thunder download failed:', error);
+        showStatus('⚡ Download failed. Right-click the QR code and "Save image as..."', 'error');
     }
+}
 
-    function showError(message) {
-        const qrContainer = document.getElementById('qrcode');
-        qrContainer.innerHTML = `
+function showStatus(message, type) {
+    UI_ELEMENTS.status.innerHTML = `<div class="status ${type}">${message}</div>`;
+
+    const statusElement = UI_ELEMENTS.status.querySelector('.status');
+    setTimeout(() => {
+        statusElement.classList.add('show');
+    }, 10);
+
+    if (type === 'success' || type === 'loading') {
+        setTimeout(() => {
+            statusElement.classList.remove('show');
+            setTimeout(() => {
+                UI_ELEMENTS.status.innerHTML = '';
+            }, 300);
+        }, 3000);
+    }
+}
+
+function showError(message) {
+    UI_ELEMENTS.qrcode.innerHTML = `
         <div class="error">
             <strong>⚡ System Error:</strong><br>
             ${message}
@@ -664,381 +633,96 @@ function createStarfield() {
             </button>
         </div>
     `;
-        showStatus(`⚡ ${message}`, 'error');
+    showStatus(`⚡ ${message}`, 'error');
 
-        // Electric error effect
-        triggerLightningFlash();
-    }
+    triggerLightningFlash();
+}
 
-    // Initialize everything
-    function validateUrl() {
-        const url = UI_ELEMENTS.urlInput.value.trim();
+function validateUrl() {
+    const url = UI_ELEMENTS.urlInput.value.trim();
 
-        try {
-            if (url === '') {
-                UI_ELEMENTS.urlInput.style.borderColor = 'var(--card-border)';
-                UI_ELEMENTS.generateBtn.disabled = true;
-                return false;
-            }
-
-            if (!isValidHttpUrl(url)) {
-                throw new Error('Invalid protocol');
-            }
-
-            UI_ELEMENTS.urlInput.style.borderColor = 'var(--text-accent)';
-            UI_ELEMENTS.urlInput.style.boxShadow = '0 0 15px rgba(0, 255, 136, 0.3)';
-            UI_ELEMENTS.generateBtn.disabled = false;
-            return true;
-        } catch (e) {
-            UI_ELEMENTS.urlInput.style.borderColor = '#ff006e';
-            UI_ELEMENTS.urlInput.style.boxShadow = '0 0 15px rgba(255, 0, 110, 0.3)';
+    try {
+        if (url === '') {
+            UI_ELEMENTS.urlInput.style.borderColor = 'var(--card-border)';
             UI_ELEMENTS.generateBtn.disabled = true;
             return false;
         }
-    }
 
-    function handleGenerateClick() {
-        const urlInput = document.getElementById('urlInput');
-        const url = urlInput.value.trim();
-
-        if (!validateUrl()) {
-            showStatus('⚡ Please enter a valid URL', 'error');
-            return;
+        if (!isValidHttpUrl(url)) {
+            throw new Error('Invalid protocol');
         }
 
-        // Update generator URL
-        qrGenerator.setUrl(url);
-
-        // Update current URL display
-        document.getElementById('currentUrl').textContent = url;
-
-        // Update suggestions
-        setupUrlSuggestions();
-
-        // Generate new QR code
-        generateQRCode();
-    }
-
-    function setupUrlSuggestions() {
-        const suggestionsContainer = UI_ELEMENTS.urlSuggestions;
-        const history = qrGenerator.getUrlHistory();
-
-        // Clear existing suggestions
-        suggestionsContainer.innerHTML = '';
-
-        const popularSuggestions = [
-            'https://github.com/username',
-            'https://linkedin.com/in/username',
-            'https://your-portfolio.com',
-            'https://your-resume.pdf'
-        ];
-
-        // Add recent URLs - SECURE VERSION
-        history.forEach(url => {
-            if (isValidHttpUrl(url)) {
-                const shortUrl = url.length > 30 ? url.substring(0, 30) + '...' : url;
-                const suggestion = document.createElement('div');
-                suggestion.className = 'url-suggestion recent';
-                suggestion.textContent = `📍 ${shortUrl}`;
-                suggestion.title = url;
-                suggestion.addEventListener('click', () => selectSuggestion(url));
-                suggestionsContainer.appendChild(suggestion);
-            }
-        });
-
-        // Add popular suggestions
-        popularSuggestions.forEach(url => {
-            if (!history.includes(url)) {
-                const suggestion = document.createElement('div');
-                suggestion.className = 'url-suggestion';
-                suggestion.textContent = `💡 ${url}`;
-                suggestion.title = url;
-                suggestion.addEventListener('click', () => selectSuggestion(url));
-                suggestionsContainer.appendChild(suggestion);
-            }
-        });
-    }
-
-    function selectSuggestion(url) {
-        const urlInput = document.getElementById('urlInput');
-        urlInput.value = url;
-        validateUrl();
-
-        // Add electric effect to input
-        urlInput.style.background = 'rgba(0, 212, 255, 0.1)';
-        setTimeout(() => {
-            urlInput.style.background = '';
-        }, 500);
-    }
-    console.log('⚡ Thunder QR Generator loaded successfully!');
-}
-
-/**
- * Personal Finance Dashboard - Sound Effects System
- * Hover sound effects with accessibility considerations
- */
-
-// Sound system configuration
-const SoundSystem = {
-    enabled: true,
-    volume: 0.3,
-    sounds: {},
-    preferencesKey: 'financeApp_soundPreferences'
-};
-
-/**
- * Initialize sound system
- */
-function initializeSoundSystem() {
-    try {
-        // Load user preferences
-        loadSoundPreferences();
-        
-        // Create sound objects using Web Audio API (better than HTML5 audio for short sounds)
-        createSoundEffects();
-        
-        // Add sound toggle control
-        addSoundToggleControl();
-        
-        // Set up hover listeners
-        setupSoundHoverListeners();
-        
-        console.log('Sound system initialized');
-        
-    } catch (error) {
-        console.error('Sound system initialization failed:', error);
-        SoundSystem.enabled = false;
+        UI_ELEMENTS.urlInput.style.borderColor = 'var(--text-accent)';
+        UI_ELEMENTS.urlInput.style.boxShadow = '0 0 15px rgba(0, 255, 136, 0.3)';
+        UI_ELEMENTS.generateBtn.disabled = false;
+        return true;
+    } catch (e) {
+        UI_ELEMENTS.urlInput.style.borderColor = '#ff006e';
+        UI_ELEMENTS.urlInput.style.boxShadow = '0 0 15px rgba(255, 0, 110, 0.3)';
+        UI_ELEMENTS.generateBtn.disabled = true;
+        return false;
     }
 }
 
-/**
- * Create sound effects using synthesized audio
- */
-function createSoundEffects() {
-    // Create AudioContext
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    
-    SoundSystem.sounds = {
-        // Button hover sound - soft beep
-        buttonHover: createToneSound(audioContext, 800, 0.1, 'sine'),
-        
-        // Card hover sound - gentle chime  
-        cardHover: createToneSound(audioContext, 600, 0.15, 'triangle'),
-        
-        // Success sound - pleasant ding
-        success: createToneSound(audioContext, 1000, 0.2, 'sine'),
-        
-        // Error sound - gentle warning
-        error: createToneSound(audioContext, 300, 0.2, 'sawtooth')
-    };
+function handleGenerateClick() {
+    const url = UI_ELEMENTS.urlInput.value.trim();
+
+    if (!validateUrl()) {
+        showStatus('⚡ Please enter a valid URL', 'error');
+        return;
+    }
+
+    qrGenerator.setUrl(url);
+    UI_ELEMENTS.currentUrl.textContent = url;
+    setupUrlSuggestions();
+    generateQRCode();
 }
 
-/**
- * Create synthesized tone sound
- */
-function createToneSound(audioContext, frequency, duration, waveType = 'sine') {
-    return {
-        play: () => {
-            if (!SoundSystem.enabled) return;
-            
-            try {
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                // Configure oscillator
-                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-                oscillator.type = waveType;
-                
-                // Configure gain (volume)
-                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-                gainNode.gain.linearRampToValueAtTime(SoundSystem.volume, audioContext.currentTime + 0.01);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
-                
-                // Connect nodes
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                // Play sound
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + duration);
-                
-            } catch (error) {
-                console.error('Sound playback error:', error);
-            }
-        }
-    };
-}
+function setupUrlSuggestions() {
+    const suggestionsContainer = UI_ELEMENTS.urlSuggestions;
+    const history = qrGenerator.getUrlHistory();
 
-/**
- * Set up hover sound listeners
- */
-function setupSoundHoverListeners() {
-    // Throttle hover events to prevent sound spam
-    const throttledPlay = throttle(playHoverSound, 100);
-    
-    // Button hover sounds
-    document.addEventListener('mouseover', (e) => {
-        if (!SoundSystem.enabled) return;
-        
-        const target = e.target.closest('.btn, .action-btn, .nav-link');
-        if (target) {
-            throttledPlay('buttonHover');
+    suggestionsContainer.innerHTML = '';
+
+    const popularSuggestions = [
+        'https://github.com/username',
+        'https://linkedin.com/in/username',
+        'https://your-portfolio.com',
+        'https://your-resume.pdf'
+    ];
+
+    history.forEach(url => {
+        if (isValidHttpUrl(url)) {
+            const shortUrl = url.length > 30 ? url.substring(0, 30) + '...' : url;
+            const suggestion = document.createElement('div');
+            suggestion.className = 'url-suggestion recent';
+            suggestion.textContent = `📍 ${shortUrl}`;
+            suggestion.title = url;
+            suggestion.addEventListener('click', () => selectSuggestion(url));
+            suggestionsContainer.appendChild(suggestion);
         }
     });
-    
-    // Card hover sounds
-    document.addEventListener('mouseover', (e) => {
-        if (!SoundSystem.enabled) return;
-        
-        const target = e.target.closest('.stat-card, .category-card, .transaction-item, .metric-card');
-        if (target) {
-            throttledPlay('cardHover');
+
+    popularSuggestions.forEach(url => {
+        if (!history.includes(url)) {
+            const suggestion = document.createElement('div');
+            suggestion.className = 'url-suggestion';
+            suggestion.textContent = `💡 ${url}`;
+            suggestion.title = url;
+            suggestion.addEventListener('click', () => selectSuggestion(url));
+            suggestionsContainer.appendChild(suggestion);
         }
     });
-    
-    // Respect user's motion preferences
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        SoundSystem.enabled = false;
-    }
 }
 
-/**
- * Play hover sound
- */
-function playHoverSound(soundType) {
-    if (SoundSystem.sounds[soundType]) {
-        SoundSystem.sounds[soundType].play();
-    }
+function selectSuggestion(url) {
+    UI_ELEMENTS.urlInput.value = url;
+    validateUrl();
+
+    UI_ELEMENTS.urlInput.style.background = 'rgba(0, 212, 255, 0.1)';
+    setTimeout(() => {
+        UI_ELEMENTS.urlInput.style.background = '';
+    }, 500);
 }
 
-/**
- * Play notification sounds
- */
-function playNotificationSound(type) {
-    if (!SoundSystem.enabled) return;
-    
-    const soundMap = {
-        success: 'success',
-        error: 'error',
-        warning: 'error',
-        info: 'success'
-    };
-    
-    const soundType = soundMap[type] || 'success';
-    if (SoundSystem.sounds[soundType]) {
-        SoundSystem.sounds[soundType].play();
-    }
-}
-
-/**
- * Add sound toggle control to UI
- */
-function addSoundToggleControl() {
-    // Add toggle button to header
-    const nav = document.querySelector('.nav-menu');
-    if (nav) {
-        const soundToggle = document.createElement('li');
-        soundToggle.innerHTML = `
-            <button class="nav-link sound-toggle" 
-                    id="sound-toggle" 
-                    aria-label="Toggle sound effects"
-                    title="Toggle sound effects">
-                <span class="sound-icon">${SoundSystem.enabled ? '🔊' : '🔇'}</span>
-            </button>
-        `;
-        
-        nav.appendChild(soundToggle);
-        
-        // Add click handler
-        const toggleButton = soundToggle.querySelector('#sound-toggle');
-        toggleButton.addEventListener('click', toggleSounds);
-    }
-}
-
-/**
- * Toggle sound system on/off
- */
-function toggleSounds() {
-    SoundSystem.enabled = !SoundSystem.enabled;
-    saveSoundPreferences();
-    
-    // Update toggle button
-    const toggleButton = document.getElementById('sound-toggle');
-    const icon = toggleButton.querySelector('.sound-icon');
-    if (icon) {
-        icon.textContent = SoundSystem.enabled ? '🔊' : '🔇';
-    }
-    
-    // Play confirmation sound
-    if (SoundSystem.enabled && SoundSystem.sounds.success) {
-        setTimeout(() => SoundSystem.sounds.success.play(), 100);
-    }
-    
-    // Show notification
-    showNotification(
-        `Sound effects ${SoundSystem.enabled ? 'enabled' : 'disabled'}`, 
-        'info'
-    );
-}
-
-/**
- * Load sound preferences from localStorage
- */
-function loadSoundPreferences() {
-    try {
-        const saved = localStorage.getItem(SoundSystem.preferencesKey);
-        if (saved) {
-            const prefs = JSON.parse(saved);
-            SoundSystem.enabled = prefs.enabled !== false; // Default to true
-            SoundSystem.volume = prefs.volume || 0.3;
-        }
-    } catch (error) {
-        console.error('Failed to load sound preferences:', error);
-    }
-}
-
-/**
- * Save sound preferences to localStorage
- */
-function saveSoundPreferences() {
-    try {
-        const prefs = {
-            enabled: SoundSystem.enabled,
-            volume: SoundSystem.volume
-        };
-        localStorage.setItem(SoundSystem.preferencesKey, JSON.stringify(prefs));
-    } catch (error) {
-        console.error('Failed to save sound preferences:', error);
-    }
-}
-
-/**
- * Throttle function to prevent sound spam
- */
-function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    };
-}
-
-// Initialize sound system when DOM loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Small delay to ensure other systems are loaded
-    setTimeout(initializeSoundSystem, 500);
-});
-
-// Override showNotification to include sounds
-const originalShowNotification = window.showNotification;
-window.showNotification = function(message, type) {
-    if (originalShowNotification) {
-        originalShowNotification(message, type);
-    }
-    playNotificationSound(type);
-};
+console.log('⚡ Thunder QR Generator loaded successfully!');
