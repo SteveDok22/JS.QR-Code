@@ -4,7 +4,7 @@ A visually immersive QR code generator featuring a thunder-themed interface with
 
 <div align="center">
 
-![Am I Responsive](docs/images/responsive-mockup.png)
+![Am I Responsive](Assets\videos\QRvideo.gif)
 
 *Thunder QR Code Generator — responsive across all devices*
 
