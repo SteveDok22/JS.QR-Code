@@ -1,283 +1,406 @@
 # ⚡ Thunder QR Code Generator
 
-A powerful and visually stunning QR code generator with lightning-fast performance and electrifying effects. Create professional QR codes for any URL with an immersive thunder-themed interface featuring animated starfields, lightning effects, and electric interactions.
+A visually immersive QR code generator featuring a thunder-themed interface with animated starfields, lightning effects, and real-time URL validation. Built with vanilla JavaScript to demonstrate DOM manipulation, CSS animations, and API integration skills.
 
-## Project Overview
+<div align="center">
 
-**Live Website:** [See deployed website](https://stevedok22.github.io/JS.QR-Code/)
+![Am I Responsive](docs/images/responsive-mockup.png)
 
-## 🌟 Features
+*Thunder QR Code Generator — responsive across all devices*
 
-### ⚡ Enhanced Web Interface
-- **Thunder Theme**: Dark interface with animated starfield background
-- **Lightning Effects**: Dynamic lightning bolts and electric particles
-- **URL Input**: Generate QR codes for any URL with real-time validation
-- **URL History**: Automatic saving of recently used URLs (up to 5)
-- **Smart Suggestions**: Quick access to popular URL templates
-- **Electric Animations**: Button ripple effects and spark bursts
-- **Progress Tracking**: Animated progress bar with electric glow
+</div>
 
-### 🚀 Core Functionality
-- **High Quality**: 300x300px PNG output with customizable settings
-- **Multiple APIs**: Fallback system using QR Server and Google Charts APIs
-- **Smart Filename**: Automatic filename generation based on domain
-- **Error Handling**: Comprehensive error messages with electric effects
-- **Mobile Responsive**: Fully optimized for all devices
-- **Real-time Validation**: Instant URL validation with visual feedback
+<div align="center">
 
-## 🎮 Interactive Elements
+[![Live Site](https://img.shields.io/badge/🚀_LIVE_SITE-GitHub_Pages-blue?style=for-the-badge)](https://stevedok22.github.io/JS.QR-Code/)
+[![GitHub repo](https://img.shields.io/badge/📂_REPOSITORY-GitHub-181717?style=for-the-badge&logo=github)](https://github.com/SteveDok22/JS.QR-Code)
 
-- **Animated Starfield**: 200+ twinkling stars with parallax effects
-- **Lightning Strikes**: Random lightning flashes across the screen
-- **Shooting Stars**: Periodic meteor effects
-- **Electric Particles**: Floating energy particles
-- **Thunder Hover Effects**: Electric field simulation on mouse movement
-- **Spark Animations**: Button interactions create electric bursts
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/t/SteveDok22/JS.QR-Code)](https://github.com/SteveDok22/JS.QR-Code/commits/main)
+[![GitHub last commit](https://img.shields.io/github/last-commit/SteveDok22/JS.QR-Code)](https://github.com/SteveDok22/JS.QR-Code/commits/main)
+[![GitHub repo size](https://img.shields.io/github/repo-size/SteveDok22/JS.QR-Code)](https://github.com/SteveDok22/JS.QR-Code)
 
-## 🚀 Quick Start
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript_ES6+-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-### Web Interface (Recommended)
-1. Open `index.html` in your browser
-2. Enter any URL in the input field
-3. Click "⚡ Generate" or press Enter
-4. Download your custom QR code
-5. Choose from URL suggestions or history
-
-### Command Line Interface
-```bash
-# Install dependencies
-npm init -y
-npm install qrcode
-
-# Generate QR code
-node index.js
-```
-
-## 📁 File Structure
-
-```
-thunder-qr-generator/
-├── 📄 index.html          # Thunder-themed web interface
-├── ⚡ Assets/css/styles.css   # Thunder styling and animations
-├── ⚡ Assets/js/script.js     # Enhanced JavaScript with effects
-├── ⚙️  config.js          # Configuration settings (Node.js)
-├── 🔧 generate-qr.js      # QR generation functions (Node.js)
-├── 🚀 index.js            # Main Node.js entry point
-├── 📋 README.md           # This documentation
-└── 📦 package.json        # Project dependencies
-```
-
-## 🔗 URL Input Features
-
-### Supported URL Types
-- **Personal websites**: `https://your-portfolio.com`
-- **Social profiles**: `https://linkedin.com/in/username`
-- **GitHub repositories**: `https://github.com/username/repo`
-- **Google Drive documents**: `https://docs.google.com/document/...`
-- **Resume PDFs**: `https://your-resume.pdf`
-- **Any valid URL**: The generator accepts any properly formatted URL
-
-### Smart Features
-- **Real-time validation**: Instant feedback on URL correctness
-- **Visual indicators**: Color-coded input field (green=valid, red=invalid)
-- **URL history**: Last 5 URLs automatically saved and suggested
-- **Quick suggestions**: Popular URL templates for common use cases
-- **Smart filenames**: Downloads named after domain (e.g., `qr-github-com.png`)
-
-## ⚡ Usage Examples
-
-### Web Interface Usage
-1. **Enter URL**: Type or paste any URL into the input field
-2. **Validation**: Watch the field change color (green = valid)
-3. **Generate**: Click "⚡ Generate" button or press Enter
-4. **Effects**: Enjoy the lightning and electric animations
-5. **Download**: Click "⬇ Download" to save your QR code
-6. **History**: Previous URLs appear as suggestions
-
-### Example URLs to Try
-```
-https://github.com/yourusername
-https://linkedin.com/in/yourprofile  
-https://your-portfolio-site.com
-https://docs.google.com/document/your-resume
-https://stevedok22.github.io/Project-CV-Code-0.2/
-```
-
-### Command Line Usage
-```bash
-# Generate with default URL
-node index.js
-
-# Generate multiple formats
-node index.js --multiple
-```
-
-## 🎨 Thunder Theme Customization
-
-### CSS Variables
-```css
-:root {
-    --primary-gradient: linear-gradient(135deg, #00d4ff 0%, #090979 50%, #020024 100%);
-    --thunder-gradient: linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #8338ec 100%);
-    --text-accent: #00d4ff;
-    --shadow-thunder: 0 0 30px rgba(255, 215, 0, 0.5);
-}
-```
-
-### Animation Settings
-- **Stars**: 200 animated stars with random twinkling
-- **Lightning**: 4 lightning bolts with 8-second cycles
-- **Particles**: Electric particles with 6-second float animations
-- **Transitions**: Smooth 0.3s transitions on interactive elements
-
-## 🛠️ Configuration
-
-### Web Interface Settings
-- **Default URL**: Set in the input field value
-- **QR Size**: 300x300 pixels (optimized for scanning)
-- **File Format**: PNG with transparent background support
-- **Color Scheme**: Black QR code on white background (best contrast)
-
-### Node.js Configuration (`config.js`)
-```javascript
-const config = {
-    url: 'https://your-website.com',
-    filename: 'qr-code.png',
-    options: {
-        width: 300,
-        margin: 2,
-        color: {
-            dark: '#000000',
-            light: '#FFFFFF'
-        }
-    }
-};
-```
-
-## 🔧 API Reference
-
-### ThunderQRGenerator Class
-```javascript
-const generator = new ThunderQRGenerator();
-
-// Set URL for QR generation
-generator.setUrl('https://example.com');
-
-// Generate QR code
-await generator.generate();
-
-// Access URL history
-const history = generator.getUrlHistory();
-```
-
-### Key Methods
-- `setUrl(url)`: Set URL and add to history
-- `generate()`: Generate QR code with fallback APIs
-- `getUrlHistory()`: Retrieve saved URL history
-- `loadUrlHistory()`: Load history from localStorage
-
-## 📱 How to Use Your QR Codes
-
-### Professional Applications
-- **Business Cards**: Add QR codes linking to your portfolio
-- **Resume Headers**: Include QR code for online resume access
-- **Networking Events**: Quick sharing of contact information
-- **Portfolio Prints**: Link physical work to digital versions
-- **Email Signatures**: Professional QR code integration
-
-### Testing Your QR Codes
-1. **Mobile Camera**: Most smartphones automatically detect QR codes
-2. **QR Reader Apps**: Use dedicated scanning applications
-3. **Multiple Devices**: Test across different phone models
-4. **Print Quality**: Ensure sufficient size and contrast when printing
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**QR Code Not Generating:**
-- Check internet connection (requires API access)
-- Verify URL format is correct
-- Try refreshing the page
-
-**URL Validation Errors:**
-- Ensure URL includes `https://` or `http://`
-- Check for typos in domain name
-- Verify URL is accessible
-
-**Visual Effects Not Working:**
-- Enable JavaScript in browser
-- Try a modern browser (Chrome, Firefox, Safari, Edge)
-- Check for browser console errors
-
-**Download Issues:**
-- Allow downloads in browser settings
-- Try right-click "Save image as..." on QR code
-- Check available disk space
-
-## 🎯 Best Practices
-
-### For Maximum Scannability
-- **Size**: Minimum 2cm x 2cm when printed
-- **Contrast**: Black on white provides best results
-- **Testing**: Always test QR codes before final use
-- **Backup**: Include URL as text alongside QR code
-
-### For Professional Use
-- **Placement**: Corner or dedicated section of documents
-- **Context**: Add "Scan for [purpose]" instruction
-- **Quality**: Use high-resolution PNG files
-- **Updates**: Regenerate if URLs change
-
-## 🌟 Advanced Features
-
-### URL History System
-- Automatically saves last 5 unique URLs
-- Persistent storage across browser sessions
-- Quick selection from suggestions
-- Smart duplicate prevention
-
-### Multi-API Fallback
-1. **QR Server API** (Primary)
-2. **Google Charts API** (Backup)
-3. **Local Fallback** (Placeholder with instructions)
-
-### Electric Effect System
-- **Mouse Tracking**: Electric field intensity based on cursor position
-- **Random Events**: Lightning strikes every 3-8 seconds
-- **Interactive Animations**: Button clicks trigger spark effects
-- **Progress Feedback**: Animated progress bar during generation
-
-## 📄 License
-
-MIT License - Free for personal and commercial use.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📞 Support
-
-**Having Issues?**
-1. Check the troubleshooting section above
-2. Verify all files are in correct locations
-3. Test with default settings first
-4. Open an issue with detailed error information
-
-## 🎉 Perfect For
-
-- Web developers showcasing projects
-- Job seekers sharing resume links
-- Business professionals networking
-- Students presenting portfolios
-- Anyone needing quick URL sharing
+</div>
 
 ---
 
-**Experience the power of lightning-fast QR generation with stunning visual effects!**
+## 📌 Table of Contents
 
-*Made with ⚡ and lots of creative energy*
+- [Introduction](#introduction)
+- [Project Goals](#project-goals)
+- [User Stories](#user-stories)
+- [UX & Design](#ux--design)
+- [Features](#features)
+  - [Core Functionality](#core-functionality)
+  - [Visual Effects System](#visual-effects-system)
+  - [Smart URL Management](#smart-url-management)
+  - [Future Features](#future-features)
+- [Technologies Used](#technologies-used)
+- [File Structure](#file-structure)
+- [API Architecture](#api-architecture)
+- [Testing](#testing)
+  - [Manual Testing](#manual-testing)
+  - [Browser Compatibility](#browser-compatibility)
+  - [Validator Testing](#validator-testing)
+  - [Bugs](#bugs)
+- [Deployment](#deployment)
+  - [GitHub Pages](#github-pages)
+  - [Local Development](#local-development)
+- [Credits & Acknowledgements](#credits--acknowledgements)
+
+---
+
+## Introduction
+
+**Thunder QR Code Generator** is a front-end web application that allows users to generate downloadable QR codes for any valid URL. The project was built to showcase proficiency in vanilla JavaScript (ES6+), advanced CSS animations, and third-party API integration — all without relying on external frameworks.
+
+The thunder-themed interface transforms a simple utility tool into an engaging visual experience, featuring 200+ animated stars, dynamic lightning bolts, floating electric particles, and interactive mouse-tracking effects.
+
+**Key technical demonstrations:**
+- Object-Oriented JavaScript with the `ThunderQRGenerator` class
+- Multi-API fallback architecture for reliability
+- `localStorage` for persistent URL history
+- CSS keyframe animations and `requestAnimationFrame` for performant effects
+- Real-time input validation with visual feedback
+- Responsive design optimized for mobile, tablet, and desktop
+
+---
+
+## Project Goals
+
+| Goal | Description |
+|------|-------------|
+| **Technical Skill** | Demonstrate advanced vanilla JavaScript and CSS animation capabilities |
+| **Practical Utility** | Provide a functional tool for generating high-quality, downloadable QR codes |
+| **Visual Impact** | Create a memorable, portfolio-worthy interface with immersive visual effects |
+| **Reliability** | Implement multi-API fallback to ensure QR generation works consistently |
+| **User Experience** | Deliver intuitive URL input with validation, history, and smart suggestions |
+
+---
+
+## User Stories
+
+| # | As a... | I want to... | So that I can... |
+|---|---------|-------------|-----------------|
+| 1 | User | Enter any URL and generate a QR code | Quickly create QR codes for sharing links |
+| 2 | User | Download the generated QR code as PNG | Use it in documents, business cards, or print materials |
+| 3 | User | See my recently used URLs | Regenerate codes without retyping URLs |
+| 4 | User | Get real-time validation feedback | Know immediately if my URL is correctly formatted |
+| 5 | User | Select from suggested URL templates | Get started quickly with common link types |
+| 6 | Recruiter / Visitor | Experience a visually engaging interface | Appreciate the developer's front-end capabilities |
+
+---
+
+## UX & Design
+
+### Colour Scheme
+
+The thunder theme uses a dark-mode palette designed for visual impact and readability:
+
+| Element | Colour | Hex Code |
+|---------|--------|----------|
+| Background | Deep Space Blue | `#020024` → `#090979` → `#00d4ff` |
+| Primary Accent | Electric Cyan | `#00d4ff` |
+| Thunder Accent | Gold to Purple | `#ffd700` → `#ff6b35` → `#8338ec` |
+| Text | White | `#ffffff` |
+| Valid Input | Electric Green | `#00ff88` |
+| Invalid Input | Neon Red | `#ff4444` |
+| Card Background | Semi-transparent | `rgba(255, 255, 255, 0.05)` |
+
+### Typography
+
+The application uses the system font stack for optimal performance and native feel across all platforms, with fallback to `Arial, sans-serif`.
+
+### Wireframes
+
+<details>
+<summary>Click to expand wireframes</summary>
+
+| View | Wireframe |
+|------|-----------|
+| Desktop | ![Desktop Wireframe](docs/wireframes/desktop.png) |
+| Mobile | ![Mobile Wireframe](docs/wireframes/mobile.png) |
+
+</details>
+
+---
+
+## Features
+
+### Core Functionality
+
+**QR Code Generation**
+- High-quality 300×300px PNG output optimized for scanning
+- Support for any valid URL (websites, LinkedIn, GitHub, Google Docs, PDFs, etc.)
+- Smart filename generation based on domain name (e.g., `qr-github-com.png`)
+- One-click download with proper file naming
+
+![QR Generation Demo](docs/images/qr-generation.png)
+
+**Real-Time URL Validation**
+- Instant visual feedback with colour-coded input border
+- Green glow for valid URLs, red for invalid
+- Validation runs on every keystroke for immediate response
+
+![URL Validation](docs/images/url-validation.png)
+
+### Visual Effects System
+
+The interface features a layered animation system built entirely with CSS and JavaScript:
+
+| Effect | Implementation | Details |
+|--------|---------------|---------|
+| **Animated Starfield** | CSS + JS | 200+ twinkling stars with randomized size, position, and animation delay |
+| **Lightning Strikes** | CSS keyframes | 4 lightning bolt elements with staggered 8-second animation cycles |
+| **Shooting Stars** | CSS animation | Periodic meteor effects crossing the viewport |
+| **Electric Particles** | CSS + JS | Floating energy particles with 6-second float animations |
+| **Mouse Tracking** | JS `mousemove` | Electric field intensity simulation based on cursor position |
+| **Spark Bursts** | JS event-driven | Button interactions trigger directional spark particle effects |
+| **Progress Bar** | CSS + JS | Animated generation progress with electric glow effect |
+
+### Smart URL Management
+
+**URL History System**
+- Automatically saves the last 5 unique URLs to `localStorage`
+- Persistent across browser sessions
+- Quick-select from history dropdown
+- Smart duplicate prevention
+
+**URL Suggestions**
+- Pre-configured templates for common URL types:
+  - Portfolio / Personal Website
+  - LinkedIn Profile
+  - GitHub Repository
+  - Google Docs / Resume PDF
+
+### Future Features
+
+- [ ] Custom QR code colours (foreground / background)
+- [ ] QR code size selector (S / M / L / XL)
+- [ ] Logo/image overlay on QR codes
+- [ ] Batch generation for multiple URLs
+- [ ] vCard QR codes for contact information
+- [ ] Dark/Light theme toggle
+- [ ] Share QR code directly via Web Share API
+
+---
+
+## Technologies Used
+
+### Languages
+| Technology | Usage |
+|-----------|-------|
+| **HTML5** | Semantic structure, accessibility attributes |
+| **CSS3** | Animations, gradients, transitions, responsive layout (Flexbox) |
+| **JavaScript (ES6+)** | OOP class structure, DOM manipulation, API calls, localStorage |
+
+### APIs
+| API | Role |
+|-----|------|
+| [QR Server API](https://goqr.me/api/) | Primary QR code generation |
+| [Google Charts QR API](https://developers.google.com/chart/infographics/docs/qr_codes) | Fallback QR generation |
+
+### Tools & Platforms
+| Tool | Purpose |
+|------|---------|
+| **Git** | Version control |
+| **GitHub** | Repository hosting |
+| **GitHub Pages** | Deployment & hosting |
+| **VS Code** | Development IDE |
+| **Chrome DevTools** | Debugging, performance, responsive testing |
+
+---
+
+## File Structure
+
+```
+JS.QR-Code/
+│
+├── Assets/
+│   ├── css/
+│   │   └── styles.css          # All styling, animations, and responsive rules
+│   └── js/
+│       └── script.js           # ThunderQRGenerator class & effect system
+│
+├── docs/                        # Documentation assets
+│   ├── images/                  # Screenshots & mockups
+│   ├── wireframes/              # Wireframe files
+│   └── testing/                 # Testing evidence screenshots
+│
+├── index.html                   # Main application entry point
+├── README.md                    # Project documentation (this file)
+└── LICENSE                      # MIT License
+```
+
+---
+
+## API Architecture
+
+The application uses a multi-API fallback pattern to ensure reliability:
+
+```
+User enters URL
+       │
+       ▼
+┌──────────────────┐
+│  URL Validation   │──── Invalid → Show error with visual feedback
+│  (regex + format) │
+└────────┬─────────┘
+         │ Valid
+         ▼
+┌──────────────────┐
+│  QR Server API   │──── Success → Display QR code
+│  (Primary)       │
+└────────┬─────────┘
+         │ Failure
+         ▼
+┌──────────────────┐
+│  Google Charts   │──── Success → Display QR code
+│  API (Backup)    │
+└────────┬─────────┘
+         │ Failure
+         ▼
+┌──────────────────┐
+│  Local Fallback  │──── Display placeholder with instructions
+│  (Error State)   │
+└──────────────────┘
+```
+
+### ThunderQRGenerator Class — Key Methods
+
+| Method | Description |
+|--------|-------------|
+| `setUrl(url)` | Sets the target URL, validates it, and adds it to history |
+| `generate()` | Generates the QR code using the fallback API chain |
+| `getUrlHistory()` | Returns the array of saved URLs from localStorage |
+| `loadUrlHistory()` | Loads persisted URL history on page initialization |
+| `createElectricEffect()` | Triggers particle burst animation at cursor position |
+
+---
+
+## Testing
+
+### Manual Testing
+
+<details>
+<summary>Click to expand manual test cases</summary>
+
+| # | Test Case | Steps | Expected Result | Pass |
+|---|-----------|-------|-----------------|------|
+| 1 | Generate QR for valid URL | Enter `https://github.com` → Click Generate | QR code displays, download button appears | ✅ |
+| 2 | Invalid URL validation | Enter `not-a-url` | Input border turns red, generate is disabled | ✅ |
+| 3 | Empty input handling | Click Generate with empty field | Error message with visual feedback | ✅ |
+| 4 | Download functionality | Generate QR → Click Download | PNG file downloads with domain-based filename | ✅ |
+| 5 | URL history persistence | Generate 3 URLs → Refresh page | History dropdown shows all 3 URLs | ✅ |
+| 6 | URL suggestion selection | Click a suggested URL template | URL populates input and validates | ✅ |
+| 7 | Keyboard shortcut | Type URL → Press Enter | QR code generates without clicking button | ✅ |
+| 8 | API fallback | Block primary API → Generate QR | Backup API generates the code | ✅ |
+| 9 | Responsive layout | Resize browser from 320px to 1920px | Layout adapts without horizontal scroll | ✅ |
+| 10 | Visual effects render | Load page on modern browser | Stars, lightning, particles all animate | ✅ |
+
+</details>
+
+### Browser Compatibility
+
+| Browser | Version | Result |
+|---------|---------|--------|
+| Chrome | 120+ | ✅ Full support |
+| Firefox | 121+ | ✅ Full support |
+| Safari | 17+ | ✅ Full support |
+| Edge | 120+ | ✅ Full support |
+| Mobile Chrome (Android) | Latest | ✅ Full support |
+| Mobile Safari (iOS) | Latest | ✅ Full support |
+
+### Validator Testing
+
+| Validator | File | Result | Evidence |
+|-----------|------|--------|----------|
+| [W3C HTML](https://validator.w3.org/) | `index.html` | Pass — No errors | ![HTML Validation](docs/testing/html-validation.png) |
+| [W3C CSS (Jigsaw)](https://jigsaw.w3.org/css-validator/) | `styles.css` | Pass — No errors | ![CSS Validation](docs/testing/css-validation.png) |
+| [JSHint](https://jshint.com/) | `script.js` | Pass — No significant issues | ![JS Validation](docs/testing/js-validation.png) |
+| [Lighthouse](https://developer.chrome.com/docs/lighthouse/) | Full site | Performance: 90+ | ![Lighthouse](docs/testing/lighthouse.png) |
+
+### Bugs
+
+#### Resolved Bugs
+
+| # | Bug | Cause | Fix |
+|---|-----|-------|-----|
+| 1 | QR code not displaying on slow connections | API timeout too short | Added longer timeout + loading indicator |
+| 2 | URL history duplicates | No deduplication check | Added `Set`-based filtering before saving |
+| 3 | Lightning effects causing layout shift | Absolute positioning overflow | Added `overflow: hidden` to container |
+
+#### Known Bugs
+
+*No known bugs at this time.*
+
+---
+
+## Deployment
+
+### GitHub Pages
+
+The site is deployed on **GitHub Pages** directly from the `main` branch.
+
+**Steps to deploy:**
+1. Navigate to **Settings** → **Pages** in the GitHub repository
+2. Under **Source**, select `Deploy from a branch`
+3. Choose `main` branch and `/ (root)` folder
+4. Click **Save**
+5. The site will be live at: `https://stevedok22.github.io/JS.QR-Code/`
+
+### Local Development
+
+**Clone and run locally:**
+
+```bash
+# Clone the repository
+git clone https://github.com/SteveDok22/JS.QR-Code.git
+
+# Navigate to the project folder
+cd JS.QR-Code
+
+# Open in browser (macOS)
+open index.html
+
+# Or use VS Code Live Server
+code . && # Install Live Server extension → Right-click index.html → Open with Live Server
+```
+
+No build tools, dependencies, or environment variables required — the project runs entirely in the browser.
+
+---
+
+## Credits & Acknowledgements
+
+### APIs & Services
+- [QR Server API (goqr.me)](https://goqr.me/api/) — Primary QR code generation service
+- [Google Charts QR API](https://developers.google.com/chart/infographics/docs/qr_codes) — Fallback QR generation
+- [Shields.io](https://shields.io/) — README badges
+
+### Resources & References
+- [MDN Web Docs](https://developer.mozilla.org/) — JavaScript, CSS animations, and Web API references
+- [CSS-Tricks](https://css-tricks.com/) — CSS animation techniques and best practices
+- [Can I Use](https://caniuse.com/) — Browser compatibility checking
+
+### Tools
+- [Am I Responsive](https://ui.dev/amiresponsive) — Multi-device mockup generation
+- [W3C Markup Validator](https://validator.w3.org/) — HTML validation
+- [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) — CSS validation
+- [JSHint](https://jshint.com/) — JavaScript code quality
+
+---
+
+<div align="center">
+
+**Developed by Stiven Dokic** | [GitHub](https://github.com/SteveDok22) | [LinkedIn](https://www.linkedin.com/in/stiven-ntoktorov/)
+
+⚡ *From Michelin Stars to Code* ⭐ → 💻
+
+[![Made with JavaScript](https://img.shields.io/badge/Made_with-JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+
+</div>
