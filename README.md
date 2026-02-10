@@ -170,7 +170,7 @@ The interface features a layered animation system built entirely with CSS and Ja
 - Quick-select from history dropdown
 - Smart duplicate prevention
 
-**URL Suggestions**
+**URL Suggestions**  
 - Pre-configured templates for common URL types:
   - Portfolio / Personal Website
   - LinkedIn Profile
